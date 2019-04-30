@@ -13,20 +13,27 @@ function queryHandler(req, res, next) {
     }
 }
 
-function returnPalindrome(req, res) {
+// Sends palindrome object back to the requester
+function sendPalindrome(req, res) {
     let url = req.url;
     let word = req.query.word;
+    let qObj = req.query;
 
-    for (i = word.length - 1; i >= 0; i--) {
-        word += word[i];
+    if (qObj.word != undefined) {
+        for (i = word.length - 1; i >= 0; i--) {
+            word += word[i];
+        }
+
+        let object = {"palindrome" : word} 
+
+        res.type('text/plain');
+        res.send(object);
+
+	// tests to see if right object was received
+        // console.log(JSON.stringify(object));
+    } else {
+        next();
     }
-
-    let object = {"palindrome" : word} 
-
-    res.type('text/plain');
-    res.send(object);
-
-    console.log(JSON.stringify(object));
 }
 
 function fileNotFound(req, res) {
@@ -40,7 +47,7 @@ function fileNotFound(req, res) {
 const app = express()
 app.use(express.static('public'));  // can I find a static file? 
 app.get('/query', queryHandler );   // if not, is it a valid query?
-app.use( returnPalindrome );
+app.use( sendPalindrome );	    // respond back if it is a word query
 app.use( fileNotFound );            // otherwise not found
 app.listen(port, function (){console.log('Listening...');} )
  
