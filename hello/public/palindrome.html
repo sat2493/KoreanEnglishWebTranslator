@@ -1,0 +1,66 @@
+<!doctype HTML>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Palindrome</title>
+</head>
+
+<body>
+
+<header>
+<h2>Palindrome Maker</h2>
+</header>
+<script src="palindrome.js"></script>
+
+<main>
+<div id="inputDiv">
+  <input id="word">
+  <button type="button" name="button" onclick="makeRequest()">submit</button>
+</div>
+<div id="outputDiv">
+  <p id="outputGoesHere"></p>
+</div>
+</main>
+
+<!-- <script src="../miniServer3.js"></script> -->
+<script type="text/javascript">
+// Create the XHR object.
+function createRequest(method, url) {
+  let xhr = new XMLHttpRequest();
+  xhr.open(method, url, true);  // call its open method
+  return xhr;
+}
+
+function makeRequest() {
+  let input = document.getElementById("word").value;
+  let url = "http://server162.site:59265/query?word=" + input;
+
+  let xhr = createRequest('GET', url);
+
+  // checking if browser does Request
+  if (!xhr) {
+   alert('Request not supported');
+   return;
+  }
+
+  xhr.onload = function() {
+    let responseStr = xhr.responseText;  // get the JSON string
+    let object = JSON.parse(responseStr);  // turn it into an object
+
+    let output = document.getElementById("outputGoesHere");
+    output.textContent = object.palindrome;
+  }
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  // Actually send request to server
+  xhr.send();
+}
+</script>
+
+</body>
+</html>
