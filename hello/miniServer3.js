@@ -31,5 +31,3 @@ app.get('/query', queryHandler );   // if not, is it a valid query?
 app.use( fileNotFound );            // otherwise not found
 
 app.listen(port, function (){console.log('Listening...');} )
-
- 
