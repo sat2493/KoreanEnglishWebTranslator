@@ -6,12 +6,13 @@ function queryHandler(req, res, next) {
     let url = req.url;
     let qObj = req.query;
     console.log(qObj);
-    if (qObj.word != undefined) {
+    if (qObj.animal != undefined) {
+      res.json( {"beast" : qObj.animal} );
+    } else if (qObj.word != undefined) {
       var reverseStr = qObj.word.split('').reverse().join('');
       var palindrome = qObj.word + reverseStr;
       res.json( {"palindrome" : palindrome} );
-    }
-    else {
+    } else {
       next();
     }
 }
