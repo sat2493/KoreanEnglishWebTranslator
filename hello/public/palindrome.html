@@ -35,7 +35,7 @@ function createRequest(method, url) {
 
 function makeRequest() {
   let input = document.getElementById("word").value;
-  let url = "http://server162.site:59265/query?word=" + input;
+  let url = "query?word=" + input;
 
   let xhr = createRequest('GET', url);
 
