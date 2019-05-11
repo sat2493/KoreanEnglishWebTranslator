@@ -17,6 +17,18 @@ function queryHandler(req, res, next) {
     }
 }
 
+function translateHandler(req, res, next) {
+    let url = req.url;
+    let tObj = req.translate;
+    console.log(tObj);
+    if (tObj.english != undefined) {
+      
+      res.json( {"palindrome" : palindrome} );
+    } else {
+      next();
+    }
+}
+
 function fileNotFound(req, res) {
     let url = req.url;
     res.type('text/plain');
@@ -26,8 +38,9 @@ function fileNotFound(req, res) {
 
 // put together the server pipeline
 const app = express()
-app.use(express.static('public'));  // can I find a static file?
-app.get('/query', queryHandler );   // if not, is it a valid query?
+app.use(express.static('translateFiles'));  // can I find a static file?
+//app.get('/query', queryHandler );   // if not, is it a valid query?
+app.get('/translate', translateHandler );
 app.use( fileNotFound );            // otherwise not found
 
 app.listen(port, function (){console.log('Listening...');} )
