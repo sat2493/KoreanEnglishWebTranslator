@@ -2,6 +2,12 @@ const express = require('express')
 const port = 52520//30057
 //const port = 59265
 
+const APIrequest = require('request');
+const http = require('http');
+
+const APIkey = "AIzaSyCFniUqrrDfGJ5CVjIqcJKRXgHvYtf0ASs";  // ADD API KEY HERE
+const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
+
 function queryHandler(req, res, next) {
     let url = req.url;
     let qObj = req.query;
@@ -19,11 +25,10 @@ function queryHandler(req, res, next) {
 
 function translateHandler(req, res, next) {
     let url = req.url;
-    let tObj = req.translate;
+    let tObj = req.query;
     console.log(tObj);
     if (tObj.english != undefined) {
-      
-      res.json( {"palindrome" : palindrome} );
+      makeAPIRequest(tObj.english, res); 
     } else {
       next();
     }
@@ -35,6 +40,60 @@ function fileNotFound(req, res) {
     res.status(404);
     res.send('Cannot find '+url);
     }
+
+// does what testAPI.js does per request
+function makeAPIRequest(english, res) {
+    // An object containing the data expressing the query to the
+    // translate API. 
+    // Below, gets stringified and put into the body of an HTTP PUT request.
+    let requestObject =
+        {
+            "source": "en",
+            "target": "ko",
+            "q": [
+                english
+            ]
+        }
+
+    console.log("English phrase: ", requestObject.q[0]);
+
+    // The call that makes a request to the API
+    // Uses the Node request module, which packs up and sends off
+    // an HTTP message containing the request to the API server
+    APIrequest(
+            { // HTTP header stuff
+                url: url,
+                method: "POST",
+                headers: {"content-type": "application/json"},
+                // will turn the given object into JSON
+                json: requestObject     },
+            // callback function for API request
+            APIcallback
+        );
+
+    // callback function, called when data is received from API
+    function APIcallback(err, APIresHead, APIresBody) {
+        // gets three objects as input
+        if ((err) || (APIresHead.statusCode != 200)) {
+            // API is not working
+            console.log("Got API error");
+            console.log(body);
+        } else {
+            if (APIresHead.error) {
+                // API worked but is not giving you data
+                console.log(APIresHead.error);
+            } else {
+                console.log("In Korean: ",
+                APIresBody.data.translations[0].translatedText);
+                console.log("\n\nJSON was:");
+                console.log(JSON.stringify(APIresBody, undefined, 2));
+                // print it out as a string, nicely formatted
+
+                res.send(APIresBody);
+            }
+        }
+    } // end callback function
+}
 
 // put together the server pipeline
 const app = express()

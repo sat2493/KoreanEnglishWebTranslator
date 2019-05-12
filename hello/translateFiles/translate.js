@@ -6,8 +6,8 @@ function createRequest(method, url) {
 }
 
 function makeRequest() {
-  let input = document.getElementById("word").value;
-  let url = "query?word=" + input;
+  let input = document.getElementById("english").value;
+  let url = "translate?english=" + input;
 
   let xhr = createRequest('GET', url);
 
@@ -22,7 +22,7 @@ function makeRequest() {
     let object = JSON.parse(responseStr);  // turn it into an object
 
     let output = document.getElementById("outputGoesHere");
-    output.textContent = object.palindrome;
+    output.textContent = object.data.translations[0].translatedText;
   }
 
   xhr.onerror = function() {
