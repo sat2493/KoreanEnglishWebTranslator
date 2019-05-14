@@ -47,7 +47,8 @@ function storeHandler(req, res, next) {
     let sObj = req.query;
     console.log(sObj);
     if (sObj.english != undefined) {
-      makeAPIRequest(sObj.english, res);
+      insertFlashcard(sObj.english, sObj.korean);
+      res.send();
     } else {
       next();
     }
@@ -109,8 +110,6 @@ function makeAPIRequest(english, res) {
                 // print it out as a string, nicely formatted
 
                 res.send(APIresBody);
-                let korean = APIresBody.data.translations[0].translatedText; 
-                insertFlashcard(english, korean);
             }
         }
     } // end callback function
@@ -127,7 +126,7 @@ function insertFlashcard(english, korean) {
         if (err) {
             console.log("Flashcard insertion error",err);
         } else {
-            console.log("Inserted 1 Flashcard");
+            console.log("Inserted 1 Flashcard into Flashcards.db");
         }
     }
 }
@@ -137,8 +136,8 @@ const app = express()
 //app.use(express.static('public'));
 //app.use(express.static('translateFiles'));  // can I find a static file?
 app.use(express.static('flashcardsFiles'));
-//app.get('/query', queryHandler );   // if not, is it a valid query?
-//app.get('/translate', translateHandler ); 
+app.get('/query', queryHandler );   // if not, is it a valid query?
+app.get('/translate', translateHandler ); 
 app.get('/store', storeHandler );
 app.use( fileNotFound );            // otherwise not found
 
