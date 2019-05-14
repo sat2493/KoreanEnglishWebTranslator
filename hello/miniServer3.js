@@ -8,6 +8,14 @@ const http = require('http');
 const APIkey = "AIzaSyCFniUqrrDfGJ5CVjIqcJKRXgHvYtf0ASs";  // ADD API KEY HERE
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
+const sqlite3 = require("sqlite3").verbose();  // use sqlite
+const fs = require("fs"); // file system
+
+const dbFileName = "Flashcards.db";
+// makes the object that represents the database in our code
+console.log("Opened Flashcards.db");
+const db = new sqlite3.Database(dbFileName);  // object, not database.
+
 function queryHandler(req, res, next) {
     let url = req.url;
     let qObj = req.query;
@@ -66,7 +74,7 @@ function makeAPIRequest(english, res) {
             ]
         }
 
-    console.log("English phrase: ", requestObject.q[0]);
+    //console.log("English phrase: ", requestObject.q[0]);
 
     // The call that makes a request to the API
     // Uses the Node request module, which packs up and sends off
@@ -87,23 +95,41 @@ function makeAPIRequest(english, res) {
         // gets three objects as input
         if ((err) || (APIresHead.statusCode != 200)) {
             // API is not working
-            console.log("Got API error");
-            console.log(body);
+            //console.log("Got API error");
+            //console.log(body);
         } else {
             if (APIresHead.error) {
                 // API worked but is not giving you data
-                console.log(APIresHead.error);
+                //console.log(APIresHead.error);
             } else {
-                console.log("In Korean: ",
-                APIresBody.data.translations[0].translatedText);
-                console.log("\n\nJSON was:");
-                console.log(JSON.stringify(APIresBody, undefined, 2));
+                //console.log("In Korean: ",
+                //APIresBody.data.translations[0].translatedText);
+                //console.log("\n\nJSON was:");
+                //console.log(JSON.stringify(APIresBody, undefined, 2));
                 // print it out as a string, nicely formatted
 
                 res.send(APIresBody);
+                let korean = APIresBody.data.translations[0].translatedText; 
+                insertFlashcard(english, korean);
             }
         }
     } // end callback function
+}
+
+function insertFlashcard(english, korean) {
+    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, \'';
+    cmdStr += english + '\', \'';
+    cmdStr += korean + '\', 0, 0)';
+    db.run(cmdStr, tableCreationCallback);
+
+
+    function tableCreationCallback(err) {
+        if (err) {
+            console.log("Flashcard insertion error",err);
+        } else {
+            console.log("Inserted 1 Flashcard");
+        }
+    }
 }
 
 // put together the server pipeline
