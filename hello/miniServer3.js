@@ -116,10 +116,8 @@ function makeAPIRequest(english, res) {
 }
 
 function insertFlashcard(english, korean) {
-    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, \'';
-    cmdStr += english + '\', \'';
-    cmdStr += korean + '\', 0, 0)';
-    db.run(cmdStr, tableCreationCallback);
+    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, @0, @1, 0, 0)';
+    db.run(cmdStr, english, korean, tableCreationCallback);
 
 
     function tableCreationCallback(err) {
