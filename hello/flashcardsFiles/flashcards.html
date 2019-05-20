@@ -8,24 +8,11 @@
 </head>
 
 <body>
+  <div id="root"></div>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
-<header>
-<h2>English-Korean Translator</h2>
-</header>
-<script src="flashcards.js"></script>
-
-<main>
-<div id="inputDiv">
-  <input id="english">
-  <button type="button" name="button" onclick="makeRequest()">translate</button>
-  <button type="button" name="button" onclick="storeResponse()">save</button>
-</div>
-<div id="outputDiv">
-  <p id="outputGoesHere"></p>
-</div>
-</main>
-
-<script src="flashcards.js"></script>
-
+    <script src="lango.js"></script>
+    <script src="flashcards.js"></script>
 </body>
 </html>

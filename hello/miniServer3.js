@@ -1,10 +1,11 @@
 const express = require('express')
 const port = 52520//30057
-//const port = 59265
+// const port = 59265
 
 const APIrequest = require('request');
 const http = require('http');
 
+// const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
 const APIkey = "AIzaSyCFniUqrrDfGJ5CVjIqcJKRXgHvYtf0ASs";  // ADD API KEY HERE
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
@@ -36,7 +37,7 @@ function translateHandler(req, res, next) {
     let tObj = req.query;
     console.log(tObj);
     if (tObj.english != undefined) {
-      makeAPIRequest(tObj.english, res); 
+      makeAPIRequest(tObj.english, res);
     } else {
       next();
     }
@@ -45,7 +46,7 @@ function translateHandler(req, res, next) {
 function storeHandler(req, res, next) {
     let url = req.url;
     let sObj = req.query;
-    console.log(sObj);
+    console.log("OBJECT: ", sObj);
     if (sObj.english != undefined) {
       insertFlashcard(sObj.english, sObj.korean);
       res.send();
@@ -64,7 +65,7 @@ function fileNotFound(req, res) {
 // does what testAPI.js does per request
 function makeAPIRequest(english, res) {
     // An object containing the data expressing the query to the
-    // translate API. 
+    // translate API.
     // Below, gets stringified and put into the body of an HTTP PUT request.
     let requestObject =
         {
@@ -135,7 +136,7 @@ const app = express()
 //app.use(express.static('translateFiles'));  // can I find a static file?
 app.use(express.static('flashcardsFiles'));
 app.get('/query', queryHandler );   // if not, is it a valid query?
-app.get('/translate', translateHandler ); 
+app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
 app.use( fileNotFound );            // otherwise not found
 

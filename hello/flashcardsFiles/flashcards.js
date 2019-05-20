@@ -49,7 +49,6 @@ function storeResponse() {
 
   xhr.onload = function() {
     let responseStr = xhr.responseText;  // get the JSON string
-    let object = JSON.parse(responseStr);  // turn it into an object
 
     console.log("Flashcard saved! Here is the response string: \n", responseStr);
   }
