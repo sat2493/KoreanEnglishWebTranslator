@@ -16,6 +16,12 @@ html, body {
   text-align: center;
 }
 
+::placeholder {
+  text-align: center;
+  line-height: 160px;
+  color: gray;
+}
+
 #save-button {
   font-family: Helvetica;
   font-size: 25pt;
@@ -73,6 +79,12 @@ header {
   height: 330px;
 }
 
+p:empty:not(:focus)::before {
+  content: attr(data-placeholder);
+  color: gray;
+  font-size: 35px;
+}
+
 footer {
   background-color: #606a9b;
   font-family: Helvetica;
@@ -95,13 +107,14 @@ footer {
   #save-button {
     margin-top: 30px;
     margin-left: 215px;
-    font-size: 20pt;
+    font-size: 17pt;
     border-radius: 5px;
     padding: 4px 25px 4px 25px;
   }
   .cardside textarea {
     width: 280px;
     height: 166px;
+    font-size: 20pt;
     margin-right: 0px;
     margin-bottom: 20px;
   }
@@ -122,8 +135,11 @@ footer {
   .cards {
     margin-top: 40px;
   }
+  p:empty:not(:focus)::before {
+    font-size: 26px;
+  }
   footer {
-    font-size: 15pt;
+    font-size: 17pt;
   }
 }
 

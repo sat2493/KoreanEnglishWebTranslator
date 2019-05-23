@@ -31,10 +31,13 @@ function InputCard() {
     className: "cardside"
   }, React.createElement("textarea", {
     id: "english",
+    placeholder: "English",
     onKeyPress: CheckReturn
   }), React.createElement("div", {
     id: "outputDiv"
   }, React.createElement("p", {
+    "data-placeholder": "Korean",
+    contenteditable: true,
     id: "outputGoesHere"
   }))), React.createElement("button", {
     id: "save-button",
