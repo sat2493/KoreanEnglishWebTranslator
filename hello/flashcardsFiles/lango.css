@@ -1,0 +1,163 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  min-height:100%;
+  position:relative;
+}
+
+#logo {
+  font-family:  'Raleway', sans-serif;
+  font-size: 70pt;
+  color: #606a9b;
+  text-align: center;
+}
+
+#save-button {
+  font-family: Helvetica;
+  font-size: 25pt;
+  background-color: #4fcaa8;
+  border-radius: 15px;
+  padding: 5px 40px 5px 40px;
+  margin-left: 990px;
+  margin-top: 50px;
+  color: white;
+  border: none;
+}
+
+#review-button {
+  font-family: Helvetica;
+  font-size: 25pt;
+  background-color: #606a9b;
+  border-radius: 15px;
+  padding: 5px 40px 5px 40px;
+  color: white;
+  border: none;
+  position: absolute;
+  left: 0;
+  margin-top: 50px;
+  margin-left: 70px;
+}
+
+.cardside {
+  display: flex;
+  flex-direction: row;
+  text-align:center;
+  align-items: center;
+  justify-content: center;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.cardside textarea {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  margin-right: 50px;
+  width: 390px;
+  height: 326px;
+}
+
+#outputDiv {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  width: 390px;
+  height: 330px;
+}
+
+footer {
+  background-color: #606a9b;
+  font-family: Helvetica;
+  font-size: 25pt;
+  color: white;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+
+/* Phone View */
+@media only screen and (max-width: 600px) {
+  .cardside {
+    flex-direction: column;
+  }
+  #save-button {
+    margin-top: 30px;
+    margin-left: 215px;
+    font-size: 20pt;
+    border-radius: 5px;
+    padding: 4px 25px 4px 25px;
+  }
+  .cardside textarea {
+    width: 280px;
+    height: 166px;
+    margin-right: 0px;
+    margin-bottom: 20px;
+  }
+  #outputDiv {
+    width: 280px;
+    height: 160px;
+  }
+  #logo {
+    font-size: 25pt;
+  }
+  #review-button {
+    font-size: 10pt;
+    padding: 6px 8px 6px 8px;
+    margin-top: 30px;
+    margin-left: 10px;
+    border-radius: 5px;
+  }
+  .cards {
+    margin-top: 40px;
+  }
+  footer {
+    font-size: 15pt;
+  }
+}
+
+/* iPad View */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)  {
+  #save-button {
+    margin-left: 555px;
+  }
+  .cardside textarea {
+    width: 290px;
+    height: 326px;
+  }
+  #outputDiv {
+    width: 290px;
+    height: 330px;
+  }
+  #review-button {
+    font-size: 20pt;
+    padding: 5px 10px 5px 10px;
+    margin-top: 50px;
+    margin-left: 30px;
+  }
+  #logo {
+    font-size: 50pt;
+  }
+}
+
+/* iPad Pro View */
+@media only screen
+and (min-device-width : 1024px)
+and (max-device-width : 1366px)  {
+  #save-button {
+    margin-left: 685px;
+  }
+}

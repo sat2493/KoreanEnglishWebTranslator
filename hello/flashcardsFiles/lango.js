@@ -1,39 +1,54 @@
-const lango = React.createElement( 'h1', { id: 'logo' },'Lango!' );
+function Header() {
+  return React.createElement("header", {
+    id: "header"
+  }, React.createElement("h1", {
+    id: "logo"
+  }, "Lango!"), React.createElement("button", {
+    id: "review-button",
+    type: "button",
+    name: "button",
+    onClick: function() {
+      storeResponse();
+    }
+  }, "Start Review"));
+}
 
 function CheckReturn(event) {
-  console.log(event.charCode);
   if(event.charCode == 13) {
-    console.log("Return key is pressed!");
     makeRequest();
   }
 }
 
 function StoreCard() {
-  console.log("about to store");
   makeRequest();
   storeResponse();
 }
 
 function InputCard() {
   return React.createElement("div", {
+    className: "cards"
+  }, React.createElement("div", {
     className: "cardside"
   }, React.createElement("textarea", {
     id: "english",
     onKeyPress: CheckReturn
-  }), React.createElement("button", {
+  }), React.createElement("div", {
+    id: "outputDiv"
+  }, React.createElement("p", {
+    id: "outputGoesHere"
+  }))), React.createElement("button", {
+    id: "save-button",
     type: "button",
     name: "button",
     onClick: StoreCard
   }, "save"));
 }
 
-function ResponseCard() {
-  return React.createElement("div", {
-    id: "outputDiv"
-  }, React.createElement("p", {
-    id: "outputGoesHere"
-  }));
+function Footer() {
+  return React.createElement("footer", {
+    id: "footer"
+  }, "Username");
 }
 
-var main = React.createElement("main", null, lango, InputCard(), ResponseCard());
+var main = React.createElement("main", null, Header(), InputCard(), Footer());
 ReactDOM.render(main, document.getElementById('root'));
