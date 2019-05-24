@@ -5,8 +5,8 @@ const port = 52520//30057
 const APIrequest = require('request');
 const http = require('http');
 
-// const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
-const APIkey = "AIzaSyCFniUqrrDfGJ5CVjIqcJKRXgHvYtf0ASs";  // ADD API KEY HERE
+//const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
+const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  // ADD API KEY HERE
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
 const sqlite3 = require("sqlite3").verbose();  // use sqlite
