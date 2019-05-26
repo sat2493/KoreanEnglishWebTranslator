@@ -134,7 +134,7 @@ function insertFlashcard(english, korean) {
 const app = express()
 //app.use(express.static('public'));
 //app.use(express.static('translateFiles'));  // can I find a static file?
-app.use(express.static('flashcardsFiles'));
+app.use(express.static('public'));
 app.get('/query', queryHandler );   // if not, is it a valid query?
 app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
