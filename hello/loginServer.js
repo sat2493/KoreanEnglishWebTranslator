@@ -1,10 +1,27 @@
+// Needed for authentication
 const express = require('express');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 
-const GoogleStrategy = require('passport-google-oauth20');
-const sqlite = require('sqlite3');
+// Must import functions, and necessary features from miniServer3.js
+const api = require('./miniServer3');
+const APIrequest = require('request');
+const http = require('http');
 
+// const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
+const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  // ADD API KEY HERE
+const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
+
+const port = 52520;
+const GoogleStrategy = require('passport-google-oauth20');
+
+const sqlite3 = require("sqlite3").verbose();  // use sqlite            //
+const fs = require("fs"); // file system                                //
+                                                                        //
+const dbFileName = "Flashcards.db";                                     // Added into loginServer.js
+// makes the object that represents the database in our code            //
+console.log("Opened Flashcards.db");                                    //
+const db = new sqlite3.Database(dbFileName);  // object, not database.  //
 
 // Google login credentials, used when the user contacts
 // Google, to tell them where he is trying to login to, and show
@@ -94,13 +111,15 @@ app.get('/user/*',
        ); 
 
 // next, all queries (like translate or store or get...
-app.get('/query', function (req, res) { res.send('HTTP query!') });
+app.get('/user/query', api.queryHandler );   
+app.get('/user/translate', api.translateHandler );
+app.get('/user/store', api.storeHandler );
 
 // finally, not found...applies to everything
 app.use( fileNotFound );
 
 // Pipeline is ready. Start listening!  
-app.listen(52520, function (){console.log('Listening...');} );
+app.listen(port, function (){console.log('Listening...');} );
 
 
 // middleware functions
@@ -114,6 +133,7 @@ function printURL (req, res, next) {
 // function to check whether user is logged when trying to access
 // personal data
 function isAuthenticated(req, res, next) {
+    console.log("isAuthenticated.");
     if (req.user) {
 	console.log("Req.session:",req.session);
 	console.log("Req.user:",req.user);
@@ -142,18 +162,68 @@ function fileNotFound(req, res) {
 // is called (in /auth/redirect/),
 // once we actually have the profile data from Google. 
 function gotProfile(accessToken, refreshToken, profile, done) {
+    console.log("gotProfile");
     console.log("Google profile",profile);
     // here is a good place to check if user is in DB,
     // and to store him in DB if not already there. 
     // Second arg to "done" will be passed into serializeUser,
     // should be key to get user out of database.
 
-    let dbRowID = 1;  // temporary! Should be the real unique
+    let first = profile.name.givenName;
+    let last = profile.name.familyName;
+    // unique user ID will be there google ID
+    let id = profile.id;  
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
-    // True.  
+    // True. 
+     
+    if (isinTable(id, 'User')) {
+      insertUser(first, last, id);
+    } 
 
-    done(null, dbRowID); 
+    done(null, id); 
+}
+
+// checks if user has already used the site in the past
+function isinTable(id, table) {
+    console.log("isinTable. Checking table: ", table);
+    let cmdStr = 'SELECT * FROM ' + table + ' WHERE id IN (' + id + ')';
+    let isFound;
+    db.all(cmdStr, dataCallback);
+    function dataCallback( err, data ) {isFound = data.length;}
+    console.log("isinTable. ", "isFound = ", isFound);
+    return isFound;
+}
+
+// insert new Flashcard into Flashcards table
+function insertFlashcard(english, korean) {
+    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, @0, @1, 0, 0)';      //
+    db.run(cmdStr, english, korean, flashcardInsertionCallback);                                                                //
+                                                                                                                                //
+                                                                                                                                //
+    function flashcardInsertionCallback(err) {                                                                                  // Added to loginServer.js
+        if (err) {                                                                                                              //
+            console.log("Flashcard insertion error",err);                                                                       //
+        } else {                                                                                                                //
+            console.log("Inserted 1 Flashcard into Flashcards table");                                                          //
+        }                                                                                                                       //
+    }                                                                                                                           //
+} 
+
+// insert new user into User table
+function insertUser(first, last, id) {
+    console.log("insertUser.");
+    let cmdStr = 'INSERT INTO User (first, last, id) VALUES (@0, @1, @2)';      					   //
+    db.run(cmdStr, first, last, id, userInsertionCallback);                                                                //
+                                                                                                                           //
+                                                                                                                           //
+    function userInsertionCallback(err) {                                                                                  // Added to loginServer.js
+        if (err) {                                                                                                         //
+            console.log("User insertion error",err);                                                                       //
+        } else {                                                                                                           //
+            console.log("Inserted 1 user into User table");                                                                //
+        }                                                                                                                  //
+    }                                                                                                                      //
 }
 
 // Part of Server's sesssion set-up.  

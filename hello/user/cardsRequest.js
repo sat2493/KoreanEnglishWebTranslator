@@ -6,6 +6,7 @@ function createRequest(method, url) {
 }
 
 function makeRequest() {
+  console.log("at makeRequest");
   let input = document.getElementById("english").value;
   let url = "translate?english=" + input;
 
@@ -35,6 +36,7 @@ function makeRequest() {
 }
 
 function storeResponse() {
+  console.log("at storeResponse");
   let english = document.getElementById("english").value;
   let korean = document.getElementById("outputGoesHere").textContent;
   let url = "store?english=" + english + "&korean=" + korean;

@@ -9,13 +9,13 @@ const http = require('http');
 const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  // ADD API KEY HERE
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
-const sqlite3 = require("sqlite3").verbose();  // use sqlite
-const fs = require("fs"); // file system
-
-const dbFileName = "Flashcards.db";
-// makes the object that represents the database in our code
-console.log("Opened Flashcards.db");
-const db = new sqlite3.Database(dbFileName);  // object, not database.
+const sqlite3 = require("sqlite3").verbose();  // use sqlite		//
+const fs = require("fs"); // file system				//
+									//
+const dbFileName = "Flashcards.db";					// Added into loginServer.js
+// makes the object that represents the database in our code		//
+console.log("Opened Flashcards.db");					//
+const db = new sqlite3.Database(dbFileName);  // object, not database.	//
 
 function queryHandler(req, res, next) {
     let url = req.url;
@@ -117,18 +117,18 @@ function makeAPIRequest(english, res) {
 }
 
 function insertFlashcard(english, korean) {
-    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, @0, @1, 0, 0)';
-    db.run(cmdStr, english, korean, tableCreationCallback);
-
-
-    function tableCreationCallback(err) {
-        if (err) {
-            console.log("Flashcard insertion error",err);
-        } else {
-            console.log("Inserted 1 Flashcard into Flashcards.db");
-        }
-    }
-}
+    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, @0, @1, 0, 0)';	//
+    db.run(cmdStr, english, korean, flashcardInsertionCallback);								//
+																//
+																//
+    function flashcardInsertionCallback(err) {											// Added to loginServer.js
+        if (err) {														//
+            console.log("Flashcard insertion error",err);									//
+        } else {														//
+            console.log("Inserted 1 Flashcard into Flashcards.db");								//
+        }															//
+    }																//
+}																//
 
 // put together the server pipeline
 const app = express()
@@ -140,4 +140,7 @@ app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
 app.use( fileNotFound );            // otherwise not found
 
-app.listen(port, function (){console.log('Listening...');} )
+exports.queryHandler = queryHandler;
+exports.translateHandler = translateHandler;
+exports.storeHandler = storeHandler;
+exports.makeAPIRequest = makeAPIRequest
