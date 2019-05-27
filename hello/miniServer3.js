@@ -44,11 +44,12 @@ function translateHandler(req, res, next) {
 }
 
 function storeHandler(req, res, next) {
+    console.log("req: ", req);
     let url = req.url;
     let sObj = req.query;
     console.log("OBJECT: ", sObj);
     if (sObj.english != undefined) {
-      insertFlashcard(sObj.english, sObj.korean);
+      insertFlashcard(req.user.id, sObj.english, sObj.korean);
       res.send();
     } else {
       next();
@@ -116,19 +117,19 @@ function makeAPIRequest(english, res) {
     } // end callback function
 }
 
-function insertFlashcard(english, korean) {
-    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, @0, @1, 0, 0)';	//
-    db.run(cmdStr, english, korean, flashcardInsertionCallback);								//
-																//
-																//
-    function flashcardInsertionCallback(err) {											// Added to loginServer.js
-        if (err) {														//
-            console.log("Flashcard insertion error",err);									//
-        } else {														//
-            console.log("Inserted 1 Flashcard into Flashcards.db");								//
-        }															//
-    }																//
-}																//
+// insert new Flashcard into Flashcards table
+function insertFlashcard(user, english, korean) {
+    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (@0, @1, @2, 0, 0)';
+    db.run(cmdStr, user, english, korean, flashcardInsertionCallback);
+
+    function flashcardInsertionCallback(err) {
+        if (err) {
+            console.log("Flashcard insertion error",err);
+        } else {
+            console.log("Inserted 1 Flashcard into Flashcards table");
+        }
+    }
+}
 
 // put together the server pipeline
 const app = express()

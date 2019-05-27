@@ -176,7 +176,12 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True. 
-     
+
+    // save session information
+    req.user.id = id;
+    req.user.first = first;
+    req.user.last = last;  
+      
     checkExistingUser(first, last, id); 
 
     done(null, id); 
@@ -201,35 +206,20 @@ function checkExistingUser(first, last, id) {
     }   
 }
 
-// insert new Flashcard into Flashcards table
-function insertFlashcard(english, korean) {
-    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (1, @0, @1, 0, 0)';      //
-    db.run(cmdStr, english, korean, flashcardInsertionCallback);                                                                //
-                                                                                                                                //
-                                                                                                                                //
-    function flashcardInsertionCallback(err) {                                                                                  // Added to loginServer.js
-        if (err) {                                                                                                              //
-            console.log("Flashcard insertion error",err);                                                                       //
-        } else {                                                                                                                //
-            console.log("Inserted 1 Flashcard into Flashcards table");                                                          //
-        }                                                                                                                       //
-    }                                                                                                                           //
-} 
-
 // insert new user into User table
 function insertUser(first, last, id) {
     console.log("insertUser.");
-    let cmdStr = 'INSERT INTO User (first, last, id) VALUES (@0, @1, @2)';      					   //
-    db.run(cmdStr, first, last, id, userInsertionCallback);                                                                //
-                                                                                                                           //
-                                                                                                                           //
-    function userInsertionCallback(err) {                                                                                  // Added to loginServer.js
-        if (err) {                                                                                                         //
-            console.log("User insertion error",err);                                                                       //
-        } else {                                                                                                           //
-            console.log("Inserted 1 user into User table");                                                                //
-        }                                                                                                                  //
-    }                                                                                                                      //
+    let cmdStr = 'INSERT INTO User (first, last, id) VALUES (@0, @1, @2)';      					   
+    db.run(cmdStr, first, last, id, userInsertionCallback);                                                                
+                                                                                                                           
+                                                                                                                           
+    function userInsertionCallback(err) {                                                                                  
+        if (err) {                                                                                                         
+            console.log("User insertion error",err);                                                                       
+        } else {                                                                                                           
+            console.log("Inserted 1 user into User table");                                                                
+        }                                                                                                                  
+    }                                                                                                                      
 }
 
 // Part of Server's sesssion set-up.  
