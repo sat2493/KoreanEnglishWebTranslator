@@ -9,19 +9,19 @@ const APIrequest = require('request');
 const http = require('http');
 
 // const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
-const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  // ADD API KEY HERE
+const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
-const port = 52520;
+const port = /*59265; //*/52520;
 const GoogleStrategy = require('passport-google-oauth20');
 
-const sqlite3 = require("sqlite3").verbose();  // use sqlite            //
-const fs = require("fs"); // file system                                //
-                                                                        //
-const dbFileName = "Flashcards.db";                                     // Added into loginServer.js
-// makes the object that represents the database in our code            //
-console.log("Opened Flashcards.db");                                    //
-const db = new sqlite3.Database(dbFileName);  // object, not database.  //
+const sqlite3 = require("sqlite3").verbose();            
+const fs = require("fs"); // file system                                
+                                                                        
+const dbFileName = "Flashcards.db";                                     
+// makes the object that represents the database in our code            
+console.log("Opened Flashcards.db");                                    
+const db = new sqlite3.Database(dbFileName);  
 
 // Google login credentials, used when the user contacts
 // Google, to tell them where he is trying to login to, and show
@@ -177,22 +177,28 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     // Note: cannot be zero, has to be something that evaluates to
     // True. 
      
-    if (isinTable(id, 'User')) {
-      insertUser(first, last, id);
-    } 
+    checkExistingUser(first, last, id); 
 
     done(null, id); 
 }
 
 // checks if user has already used the site in the past
-function isinTable(id, table) {
-    console.log("isinTable. Checking table: ", table);
-    let cmdStr = 'SELECT * FROM ' + table + ' WHERE id IN (' + id + ')';
-    let isFound;
-    db.all(cmdStr, dataCallback);
-    function dataCallback( err, data ) {isFound = data.length;}
-    console.log("isinTable. ", "isFound = ", isFound);
-    return isFound;
+function checkExistingUser(first, last, id) {
+    console.log("existingUser");
+    let insert = 'INSERT INTO User (first, last, id) ';
+    let userInformation = 'SELECT \'' + first + '\', \'' + last + '\', ' + id + ' ';
+    let ifNotExistingUser = 'WHERE NOT EXISTS (SELECT 1 FROM User WHERE id = ' + id + ')';
+    let cmdStr = insert + userInformation + ifNotExistingUser;
+    console.log(cmdStr);
+    db.all(cmdStr, existingUserCallback);
+
+    function existingUserCallback(err) {                                                                                
+        if (err) {                                                                                                              
+            console.log("Error checking if user exists",err);                                                                       
+        } else {                                                                                                                
+            console.log("Checked if user exists");                                                             
+        }                                                                                                                       
+    }   
 }
 
 // insert new Flashcard into Flashcards table
