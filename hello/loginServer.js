@@ -177,14 +177,14 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     // Note: cannot be zero, has to be something that evaluates to
     // True. 
 
-    // save session information
+/*    // save session information
     req.user.id = id;
     req.user.first = first;
     req.user.last = last;  
-      
+*/      
     checkExistingUser(first, last, id); 
 
-    done(null, id); 
+    done(null, id);
 }
 
 // checks if user has already used the site in the past
