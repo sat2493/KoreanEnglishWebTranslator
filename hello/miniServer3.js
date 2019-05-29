@@ -48,8 +48,9 @@ function storeHandler(req, res, next) {
     let url = req.url;
     let sObj = req.query;
     console.log("OBJECT: ", sObj);
+    currentUser = req.user;
     if (sObj.english != undefined) {
-      insertFlashcard(req.user.id, sObj.english, sObj.korean);
+      insertFlashcard(currentUser.id, sObj.english, sObj.korean);
       res.send();
     } else {
       next();

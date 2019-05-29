@@ -177,11 +177,6 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     // Note: cannot be zero, has to be something that evaluates to
     // True. 
 
-/*    // save session information
-    req.user.id = id;
-    req.user.first = first;
-    req.user.last = last;  
-*/      
     checkExistingUser(first, last, id); 
 
     done(null, id);
@@ -240,6 +235,10 @@ passport.deserializeUser((dbRowID, done) => {
     // here is a good place to look up user data in database using
     // dbRowID. Put whatever you want into an object. It ends up
     // as the property "user" of the "req" object. 
-    let userData = {userData: "data from db row goes here"};
+// as the property "user" of the "req" object.
+ 
+    // save userId into the req object, right here
+    let userData = {id: dbRowID};
+
     done(null, userData);
 });
