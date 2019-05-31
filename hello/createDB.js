@@ -9,7 +9,7 @@ const db = new sqlite3.Database(dbFileName);  // object, not database.
 // Initialize table.
 // If the table already exists, causes an error.
 // Fix the error by removing or renaming Flashcards.db
-let cmdStr = 'CREATE TABLE Flashcards (user int, english int, korean int, [times seen] string, [times correct] string)';
+let cmdStr = 'CREATE TABLE Flashcards (user int, english int, korean int, seen string, correct string)';
 db.run(cmdStr,tableCreationCallback);
 
 /*function addColumns(db) {

@@ -132,6 +132,30 @@ function insertFlashcard(user, english, korean) {
     }
 }
 
+// professor's recommended algorithm
+function getScore(card) {
+  let correct = card.correct;
+  let seen = card.seen;
+  let score = ( Math.max(1,5-correct) + Math.max(1,5-seen) + 5*( (seen-correct+1)/(seen + 1)) );
+
+  return score;
+}
+
+function requestCard(user) {
+    // get user's saved cards library
+    db.all ( 'SELECT * FROM flashcards WHERE user = ' + user, chooseCard);
+    // after receiving an answer to SQL query, pick a random card from user's saved library
+    function chooseCard( err, SavedCards ) {
+      numSavedCards = data.length();
+      selectRandom = Math.ceil(Math.random() * numSavedCards);
+
+      // select a card that has a score greater than a random number in range {1, 15}
+      while ( getScore(SavedCards[selectRandom]) <= Math.ceil(Math.random() * 15) ) {
+        selectRandom = Math.ceil(Math.random() * numSavedCards);        
+      }
+    }
+}
+
 // put together the server pipeline
 const app = express()
 //app.use(express.static('public'));
