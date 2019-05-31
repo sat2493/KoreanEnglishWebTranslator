@@ -146,7 +146,7 @@ function requestCard(user) {
     db.all ( 'SELECT * FROM flashcards WHERE user = ' + user, chooseCard);
     // after receiving an answer to SQL query, pick a random card from user's saved library
     function chooseCard( err, SavedCards ) {
-      numSavedCards = data.length();
+      numSavedCards = SavedCards.length();
       selectRandom = Math.ceil(Math.random() * numSavedCards);
 
       // select a card that has a score greater than a random number in range {1, 15}
