@@ -27,7 +27,7 @@ function Header() {
       <h1 id="logo">
         Lango!
       </h1>
-      <button id="review-button" type="button" name="button"/* onClick={storeResponse}*/>
+      <button id="review-button" type="button" name="button"/* onClick={redirect url function}*/>
         Start Review
       </button>
     </header>
@@ -63,12 +63,12 @@ class CreateCardMain extends React.Component {
     return (
       <div className="cards">
         <div className="cardside">
-          <textarea id="english" placeholder="English"></textarea>
+          <textarea id="english" placeholder="English"/*, onKeyPress: this.CheckReturn*/></textarea>
           <div id="outputDiv">
             <p data-placeholder="Korean" id="outputGoesHere"></p>
           </div>
         </div>
-        <button id="save-button" type="button" name="button">save</button>
+        <button id="save-button" type="button" name="button"/*, onClick: this.StoreCard*/>save</button>
       </div>
     );
   }

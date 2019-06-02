@@ -50,7 +50,7 @@ function Header() {
     ),
     React.createElement(
       "button",
-      { id: "review-button", type: "button", name: "button" /* onClick={storeResponse}*/ },
+      { id: "review-button", type: "button", name: "button" /* onClick={redirect url function}*/ },
       "Start Review"
     )
   );
@@ -99,7 +99,7 @@ var CreateCardMain = function (_React$Component2) {
         React.createElement(
           "div",
           { className: "cardside" },
-          React.createElement("textarea", { id: "english", placeholder: "English" }),
+          React.createElement("textarea", { id: "english", placeholder: "English" , onKeyPress: this.CheckReturn }),
           React.createElement(
             "div",
             { id: "outputDiv" },
@@ -108,7 +108,7 @@ var CreateCardMain = function (_React$Component2) {
         ),
         React.createElement(
           "button",
-          { id: "save-button", type: "button", name: "button" },
+          { id: "save-button", type: "button", name: "button" , onClick: this.StoreCard },
           "save"
         )
       );

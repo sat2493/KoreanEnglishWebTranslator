@@ -114,7 +114,7 @@ app.get('/user/*',
 app.get('/user/query', api.queryHandler );   
 app.get('/user/translate', api.translateHandler );
 app.get('/user/store', api.storeHandler );
-
+app.get('/user/card', api.cardHandler );
 // finally, not found...applies to everything
 app.use( fileNotFound );
 

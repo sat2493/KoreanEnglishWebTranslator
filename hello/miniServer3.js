@@ -19,8 +19,6 @@ const db = new sqlite3.Database(dbFileName);  // object, not database.	//
 
 function queryHandler(req, res, next) {
     let url = req.url;
-    let qObj = req.query;
-    console.log(qObj);
     if (qObj.animal != undefined) {
       res.json( {"beast" : qObj.animal} );
     } else if (qObj.word != undefined) {
@@ -35,7 +33,6 @@ function queryHandler(req, res, next) {
 function translateHandler(req, res, next) {
     let url = req.url;
     let tObj = req.query;
-    console.log(tObj);
     if (tObj.english != undefined) {
       makeAPIRequest(tObj.english, res);
     } else {
@@ -44,14 +41,27 @@ function translateHandler(req, res, next) {
 }
 
 function storeHandler(req, res, next) {
-    console.log("req: ", req);
     let url = req.url;
     let sObj = req.query;
-    console.log("OBJECT: ", sObj);
-    currentUser = req.user;
+    let currentUser = req.user;
     if (sObj.english != undefined) {
       insertFlashcard(currentUser.id, sObj.english, sObj.korean);
       res.send();
+    } else {
+      next();
+    }
+}
+
+function cardHandler(req, res, next) {
+    let url = req.url;
+    let cObj = req.query;
+
+    console.log("Request is: ", cObj);
+    console.log("User id is: ", req.user.id);
+
+    let currentUser = req.user;
+    if (cObj.getCard != undefined) {
+      serveCard(currentUser.id, res);
     } else {
       next();
     }
@@ -120,7 +130,7 @@ function makeAPIRequest(english, res) {
 
 // insert new Flashcard into Flashcards table
 function insertFlashcard(user, english, korean) {
-    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, [times seen], [times correct]) VALUES (@0, @1, @2, 0, 0)';
+    let cmdStr = 'INSERT INTO Flashcards (user, english, korean, seen, correct) VALUES (@0, @1, @2, 0, 0)';
     db.run(cmdStr, user, english, korean, flashcardInsertionCallback);
 
     function flashcardInsertionCallback(err) {
@@ -141,18 +151,25 @@ function getScore(card) {
   return score;
 }
 
-function requestCard(user) {
+function serveCard(user, res) {
     // get user's saved cards library
     db.all ( 'SELECT * FROM flashcards WHERE user = ' + user, chooseCard);
     // after receiving an answer to SQL query, pick a random card from user's saved library
     function chooseCard( err, SavedCards ) {
-      numSavedCards = SavedCards.length();
-      selectRandom = Math.ceil(Math.random() * numSavedCards);
+      let numSavedCards = SavedCards.length;
+      // pick card randomly from database at index, selectRandom
+      let selectRandom = Math.floor(Math.random() * numSavedCards);
+      console.log("numSavedCards: ", numSavedCards);
+      console.log("selectRandom: ", selectRandom);
+      console.log("SavedCards[selectRandom]: ", SavedCards[selectRandom]);
 
-      // select a card that has a score greater than a random number in range {1, 15}
-      while ( getScore(SavedCards[selectRandom]) <= Math.ceil(Math.random() * 15) ) {
+      // select a card that has a score greater than a random number in range {0, 15}
+      while ( getScore(SavedCards[selectRandom]) <= Math.floor(Math.random() * 15) ) {
         selectRandom = Math.ceil(Math.random() * numSavedCards);        
       }
+      
+      let chosenCard = SavedCards[selectRandom];
+      res.send(chosenCard);
     }
 }
 
@@ -166,7 +183,9 @@ app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
 app.use( fileNotFound );            // otherwise not found
 
+// export our miniServer3.js functions so loginServer.js can access them
 exports.queryHandler = queryHandler;
 exports.translateHandler = translateHandler;
 exports.storeHandler = storeHandler;
+exports.cardHandler = cardHandler;
 exports.makeAPIRequest = makeAPIRequest
