@@ -19,6 +19,8 @@ var WholePage = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (WholePage.__proto__ || Object.getPrototypeOf(WholePage)).call(this, props));
 
     _this.state = { view: "create" };
+    //this.Header = this.Header.bind(this);
+    _this.changeToReviewMode = _this.changeToReviewMode.bind(_this);
     return _this;
   }
 
@@ -26,37 +28,55 @@ var WholePage = function (_React$Component) {
     key: "render",
     value: function render() {
       // for now passes only the CreateCardMain view
-      return React.createElement(
-        "main",
-        null,
-        React.createElement(Header, null),
-        React.createElement(CreateCardMain, null),
-        React.createElement(Footer, null)
-      );
+      if (this.state.view == "create") {
+        return React.createElement(
+          "main",
+          null,
+          "/* The following block used to be Header(); I was able to get setState to work by just hardcoding it here */",
+          React.createElement(
+            "header",
+            { id: "header" },
+            React.createElement(
+              "h1",
+              { id: "logo" },
+              "Lango!"
+            ),
+            React.createElement(
+              "button",
+              { id: "review-button", type: "button", name: "button" , onClick: this.changeToReviewMode },
+              "Start Review"
+            )
+          ),
+          "/* End of Header block  */",
+          React.createElement(CreateCardMain, null),
+          React.createElement(Footer, null)
+        );
+      } else {
+        return React.createElement(
+          "p",
+          null,
+          "Hello World!"
+        );
+      }
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log("Parent did mount.");
+    }
+  }, {
+    key: "changeToReviewMode",
+    value: function changeToReviewMode() {
+      console.log("changeToReviewMode.");
+      this.setState({ view: "review" });
     }
   }]);
 
   return WholePage;
 }(React.Component);
 
-function Header() {
-  return React.createElement(
-    "header",
-    { id: "header" },
-    React.createElement(
-      "h1",
-      { id: "logo" },
-      "Lango!"
-    ),
-    React.createElement(
-      "button",
-      { id: "review-button", type: "button", name: "button" /* onClick={redirect url function}*/ },
-      "Start Review"
-    )
-  );
-}
-
 // Only responsible for the "cards" div and its functionality
+
 
 var CreateCardMain = function (_React$Component2) {
   _inherits(CreateCardMain, _React$Component2);
@@ -141,7 +161,7 @@ function Footer() {
   );
 }
 // instantiate our html contents and its data
-var WholePageInstance = new WholePage();
+var element = React.createElement(WholePage, null);
 
-ReactDOM.render(WholePageInstance.render(), document.getElementById('root'));
+ReactDOM.render(element, document.getElementById('root'));
 

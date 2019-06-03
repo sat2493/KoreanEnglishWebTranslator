@@ -7,31 +7,39 @@ class WholePage extends React.Component {
    
     // set the default value of this.state to the create cards view just for now, and testing purposes
     this.state = { view: "create" };
+    //this.Header = this.Header.bind(this);
+    this.changeToReviewMode = this.changeToReviewMode.bind(this);
   }
 
   render() {
     // for now passes only the CreateCardMain view
-    return (
-      <main>
-        <Header/>
-        <CreateCardMain/>
-        <Footer/>
-      </main>
-    );
-  }
-}
+    if (this.state.view == "create") {
+      return (
+        <main>
+        /* The following block used to be Header(); I was able to get setState to work by just hardcoding it here */   
+          <header id="header">
+            <h1 id="logo">
+              Lango!
+            </h1>
+            <button id="review-button" type="button" name="button"/*, onClick: this.changeToReviewMode*/>
+              Start Review
+            </button>
+          </header>        
+        /* End of Header block  */
 
-function Header() {
-  return (
-    <header id="header">
-      <h1 id="logo">
-        Lango!
-      </h1>
-      <button id="review-button" type="button" name="button"/* onClick={redirect url function}*/>
-        Start Review
-      </button>
-    </header>
-  );
+          <CreateCardMain/>
+          <Footer/>
+        </main>
+      );
+    } else { return <p>Hello World!</p> }
+  }
+
+  componentDidMount() { console.log("Parent did mount."); }
+
+  changeToReviewMode() {
+    console.log("changeToReviewMode.");
+    this.setState({ view: "review" });
+  }
 }
 
 // Only responsible for the "cards" div and its functionality
@@ -83,9 +91,9 @@ function Footer() {
   ); 
 }
 // instantiate our html contents and its data
-const WholePageInstance = new WholePage();
+const element = <WholePage/>;
 
 ReactDOM.render(
-  WholePageInstance.render(),
+  element,
   document.getElementById('root')
 );
