@@ -62,6 +62,10 @@ function cardHandler(req, res, next) {
     let currentUser = req.user;
     if (cObj.getCard != undefined) {
       serveCard(currentUser.id, res);
+    } else if (cObj.getUsername != undefined) {
+      let username = currentUser.username;
+      console.log("username: ", username);
+      res.json( {"username" : username} );
     } else {
       next();
     }

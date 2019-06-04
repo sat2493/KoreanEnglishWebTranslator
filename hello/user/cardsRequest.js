@@ -33,7 +33,6 @@ function makeRequest() {
 
 function requestCard() {
   let url = "card?getCard=true";
-
   let xhr = createRequest('GET', url);
 
   if (!xhr) {
@@ -47,6 +46,33 @@ function requestCard() {
 
     console.log(cardObject);
     /* insert function(s) that loads new cards onto page */
+  }
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  // Actually send request to server
+  xhr.send();
+}
+
+function requestUsername() {
+  let url = "card?getUsername=true";
+  let xhr = createRequest('GET', url);
+
+  if (!xhr) {
+   alert('Request not supported');
+   return;
+  }
+
+  xhr.onload = function() {
+    let responseStr = xhr.responseText;
+    let usernameObject = JSON.parse(responseStr);
+
+    console.log(usernameObject);
+    let username = usernameObject.username;
+    let usernameFooter = document.getElementById("footer");
+    usernameFooter.textContent = username;
   }
 
   xhr.onerror = function() {

@@ -42,7 +42,7 @@ var WholePage = function (_React$Component) {
             ),
             React.createElement(
               "button",
-              { id: "review-button", type: "button", name: "button" , onClick: this.changeToReviewMode },
+              { id: "review-button", type: "button", name: "button", onClick: this.changeToReviewMode },
               "Start Review"
             )
           ),
@@ -51,17 +51,34 @@ var WholePage = function (_React$Component) {
         );
       } else {
         return React.createElement(
-          "p",
+          "main",
           null,
-          "Hello World!"
+          React.createElement(
+            "header",
+            { id: "header" },
+            React.createElement(
+              "h1",
+              { id: "logo" },
+              "Lango!"
+            ),
+            React.createElement(
+              "button",
+              { id: "review-button", type: "button", name: "button" /* onClick={some add function}*/ },
+              "Add"
+            )
+          ),
+          React.createElement(
+            "p",
+            null,
+            " Review shtuff goes here "
+          ),
+          React.createElement(Footer, null)
         );
       }
     }
   }, {
     key: "componentDidMount",
-    value: function componentDidMount() {
-      console.log("Parent did mount.");
-    }
+    value: function componentDidMount() {/*requestUsername();*/}
   }, {
     key: "changeToReviewMode",
     value: function changeToReviewMode() {
@@ -117,7 +134,7 @@ var CreateCardMain = function (_React$Component2) {
         React.createElement(
           "div",
           { className: "cardside" },
-          React.createElement("textarea", { id: "english", placeholder: "English" , onKeyPress: this.CheckReturn }),
+          React.createElement("textarea", { id: "english", placeholder: "English", onKeyPress: this.CheckReturn }),
           React.createElement(
             "div",
             { id: "outputDiv" },
@@ -126,7 +143,7 @@ var CreateCardMain = function (_React$Component2) {
         ),
         React.createElement(
           "button",
-          { id: "save-button", type: "button", name: "button" , onClick: this.StoreCard },
+          { id: "save-button", type: "button", name: "button", onClick: this.StoreCard },
           "save"
         )
       );
@@ -155,11 +172,12 @@ function Footer() {
   return React.createElement(
     "footer",
     { id: "footer" },
-    "Username"
+    " "
   );
 }
 // instantiate our html contents and its data
 var element = React.createElement(WholePage, null);
 
 ReactDOM.render(element, document.getElementById('root'));
+requestUsername();
 

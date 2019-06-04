@@ -19,8 +19,6 @@ const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs"); // file system                                
                                                                         
 const dbFileName = "Flashcards.db";                                     
-// makes the object that represents the database in our code            
-console.log("Opened Flashcards.db");                                    
 const db = new sqlite3.Database(dbFileName);  
 
 // Google login credentials, used when the user contacts
@@ -236,9 +234,15 @@ passport.deserializeUser((dbRowID, done) => {
     // dbRowID. Put whatever you want into an object. It ends up
     // as the property "user" of the "req" object. 
 // as the property "user" of the "req" object.
- 
-    // save userId into the req object, right here
-    let userData = {id: dbRowID};
 
-    done(null, userData);
+    db.all ( 'SELECT * FROM User WHERE id = ' + dbRowID, sendUsername );
+
+    function sendUsername( err, data ) {
+      console.log('Here');
+      // save userData into the req object, right here
+      let un = data[0].first;
+      let userData = {id: dbRowID, username: un};
+
+      done(null, userData);
+    }
 });

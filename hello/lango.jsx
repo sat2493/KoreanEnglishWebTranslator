@@ -20,7 +20,7 @@ class WholePage extends React.Component {
             <h1 id="logo">
               Lango!
             </h1>
-            <button id="review-button" type="button" name="button"/*, onClick: this.changeToReviewMode*/>
+            <button id="review-button" type="button" name="button" onClick={this.changeToReviewMode}>
               Start Review
             </button>
           </header>        
@@ -29,10 +29,27 @@ class WholePage extends React.Component {
           <Footer/>
         </main>
       );
-    } else { return <p>Hello World!</p> }
+    } else { 
+        return (
+          <main>
+            <header id="header">
+              <h1 id="logo">
+                Lango!
+              </h1>
+              <button id="review-button" type="button" name="button"/* onClick={some add function}*/>
+                Add
+              </button>
+            </header>
+
+            <p> Review shtuff goes here </p>
+
+            <Footer/>
+          </main>
+        );
+    }
   }
 
-  componentDidMount() { console.log("Parent did mount."); }
+  componentDidMount() { /*requestUsername();*/ }
 
   changeToReviewMode() {
     console.log("changeToReviewMode.");
@@ -69,12 +86,12 @@ class CreateCardMain extends React.Component {
     return (
       <div className="cards">
         <div className="cardside">
-          <textarea id="english" placeholder="English"/*, onKeyPress: this.CheckReturn*/></textarea>
+          <textarea id="english" placeholder="English" onKeyPress={this.CheckReturn}></textarea>
           <div id="outputDiv">
             <p data-placeholder="Korean" id="outputGoesHere"></p>
           </div>
         </div>
-        <button id="save-button" type="button" name="button"/*, onClick: this.StoreCard*/>save</button>
+        <button id="save-button" type="button" name="button" onClick={this.StoreCard}>save</button>
       </div>
     );
   }
@@ -85,7 +102,7 @@ class ReviewCardMain extends React.Component {}
 
 function Footer() {
   return (
-    <footer id="footer">Username</footer>
+    <footer id="footer"> </footer>
   ); 
 }
 // instantiate our html contents and its data
@@ -95,3 +112,4 @@ ReactDOM.render(
   element,
   document.getElementById('root')
 );
+requestUsername();
