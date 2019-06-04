@@ -16,7 +16,6 @@ class WholePage extends React.Component {
     if (this.state.view == "create") {
       return (
         <main>
-        /* The following block used to be Header(); I was able to get setState to work by just hardcoding it here */   
           <header id="header">
             <h1 id="logo">
               Lango!
@@ -25,7 +24,6 @@ class WholePage extends React.Component {
               Start Review
             </button>
           </header>        
-        /* End of Header block  */
 
           <CreateCardMain/>
           <Footer/>

@@ -32,7 +32,6 @@ var WholePage = function (_React$Component) {
         return React.createElement(
           "main",
           null,
-          "/* The following block used to be Header(); I was able to get setState to work by just hardcoding it here */",
           React.createElement(
             "header",
             { id: "header" },
@@ -47,7 +46,6 @@ var WholePage = function (_React$Component) {
               "Start Review"
             )
           ),
-          "/* End of Header block  */",
           React.createElement(CreateCardMain, null),
           React.createElement(Footer, null)
         );
