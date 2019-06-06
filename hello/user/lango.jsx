@@ -4,7 +4,7 @@
 class WholePage extends React.Component {
   constructor(props) {
     super(props);
-   
+
     // set the default value of this.state to the create cards view just for now, and testing purposes
     this.state = { view: "create" };
   }
@@ -75,12 +75,36 @@ class CreateCardMain extends React.Component {
 }
 
 // Only responsible for the div that displays the review cards portion
-class ReviewCardMain extends React.Component {}
+class ReviewCardMain extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.ReviewCard = this.ReviewCard.bind(this);
+  }
+
+  render() {
+    return this.ReviewCard();
+  }
+
+  ReviewCard() {
+    return (
+      <div className="cards">
+        <div className="review-cardside">
+          <div id="displayAnswer">
+            <p data-placeholder="..." id="correct-answer"></p>
+          </div>
+          <textarea id="type-answer" placeholder="Type Answer"></textarea>
+        </div>
+        <button id="next-button" type="button" name="button">Next</button>
+      </div>
+    );
+  }
+}
 
 function Footer() {
   return (
     <footer id="footer">Username</footer>
-  ); 
+  );
 }
 // instantiate our html contents and its data
 const WholePageInstance = new WholePage();

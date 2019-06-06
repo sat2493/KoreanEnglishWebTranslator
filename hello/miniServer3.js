@@ -1,12 +1,12 @@
 const express = require('express')
-const port = 52520//30057
-// const port = 59265
+// const port = 52520//30057
+const port = 59265
 
 const APIrequest = require('request');
 const http = require('http');
 
-//const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
-const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  // ADD API KEY HERE
+const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
+// const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";  // ADD API KEY HERE
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
 const sqlite3 = require("sqlite3").verbose();  // use sqlite		//
@@ -40,7 +40,37 @@ function translateHandler(req, res, next) {
     }
 }
 
+function comparsionHandler(req, res, next) {
+    console.log("inside comparsionHandle comparikksonHandlecomparsionHandlecomparsionHandlecomparsionHandlecomparsionHandle")
+    let url = req.url;
+    let sObj = req.query;
+    let currentUser = req.user;
+    if (sObj.english != undefined) {
+      console.log("INSIDEE COMPARSIONSNN")
+      console.log("sObj.english", sObj.english, " sObj.korean", sObj.korean)
+      findCard(currentUser.id, sObj.korean, res);
+    } else {
+      next();
+    }
+}
+
+function findCard(user, korean, res) {
+    // get user's saved cards library
+    let sql1 = "SELECT * FROM flashcards WHERE user =? AND korean=?";
+    db.all(sql1,[user, korean], userCard);
+    // db.all ( 'SELECT * FROM flashcards WHERE user = ' + user + ' AND korean = ' + korean, userCard);
+    // after receiving an answer to SQL query, pick a random card from user's saved library
+    function userCard( err, SavedCards ) {
+      let numSavedCards = SavedCards.length;
+      console.log("numSavedCards: ", numSavedCards);
+      console.log("THIS IS THe card: ", SavedCards[0]);
+      let chosenCard = SavedCards[0];
+      res.send(chosenCard);
+    }
+}
+
 function storeHandler(req, res, next) {
+    console.log("storeHandlerstoreHandler")
     let url = req.url;
     let sObj = req.query;
     let currentUser = req.user;
@@ -64,8 +94,9 @@ function cardHandler(req, res, next) {
       serveCard(currentUser.id, res);
     } else if (cObj.getUsername != undefined) {
       let username = currentUser.username;
+      let id = currentUser.id;
       console.log("username: ", username);
-      res.json( {"username" : username} );
+      res.json( { "id": id, "username" : username} );
     } else {
       next();
     }
@@ -169,9 +200,9 @@ function serveCard(user, res) {
 
       // select a card that has a score greater than a random number in range {0, 15}
       while ( getScore(SavedCards[selectRandom]) <= Math.floor(Math.random() * 15) ) {
-        selectRandom = Math.ceil(Math.random() * numSavedCards);        
+        selectRandom = Math.ceil(Math.random() * numSavedCards);
       }
-      
+
       let chosenCard = SavedCards[selectRandom];
       res.send(chosenCard);
     }
@@ -185,11 +216,15 @@ app.use(express.static('public'));
 app.get('/query', queryHandler );   // if not, is it a valid query?
 app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
+app.get('/comparsion', comparsionHandler );
+// app.post('seen/:id', incrementSeenHandler)
 app.use( fileNotFound );            // otherwise not found
 
 // export our miniServer3.js functions so loginServer.js can access them
 exports.queryHandler = queryHandler;
 exports.translateHandler = translateHandler;
 exports.storeHandler = storeHandler;
+exports.comparsionHandler = comparsionHandler;
 exports.cardHandler = cardHandler;
 exports.makeAPIRequest = makeAPIRequest
+// exports.incrementSeenHandler = incrementSeenHandler;

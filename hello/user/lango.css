@@ -28,7 +28,7 @@ body::after{
   color: gray;
 }
 
-#save-button {
+#save-button, #next-button {
   font-family: Helvetica;
   font-size: 25pt;
   background-color: #4fcaa8;
@@ -40,7 +40,7 @@ body::after{
   border: none;
 }
 
-#review-button {
+#review-button, #create-button {
   font-family: Helvetica;
   font-size: 25pt;
   background-color: #606a9b;
@@ -62,6 +62,39 @@ body::after{
   justify-content: center;
 }
 
+.review-cardside {
+  display: flex;
+  flex-direction: column;
+  text-align:center;
+  align-items: center;
+  justify-content: center;
+}
+
+.reviewcards p {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  margin-right: 50px;
+  width: 390px;
+  height: 326px;
+}
+
+#outputDiv {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  width: 390px;
+  height: 330px;
+}
+
+#typeAnswerDiv {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  width: 390px;
+  height: 330px;
+}
+
 header {
   display: flex;
   justify-content: center;
@@ -77,12 +110,29 @@ header {
   height: 326px;
 }
 
+#displayAnswer {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  width: 800px;
+  height: 300px;
+  margin-bottom: 40px;
+}
+
 #outputDiv {
   font-family: Helvetica;
   font-size: 30pt;
   border: 2px solid #b3b3b3;
   width: 390px;
   height: 330px;
+}
+
+.review-cardside textarea {
+  font-family: Helvetica;
+  font-size: 30pt;
+  border: 2px solid #b3b3b3;
+  width: 800px;
+  height: 100px;
 }
 
 p:empty:not(:focus)::before {

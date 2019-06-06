@@ -21,6 +21,7 @@ var WholePage = function (_React$Component) {
     _this.state = { view: "create" };
     //this.Header = this.Header.bind(this);
     _this.changeToReviewMode = _this.changeToReviewMode.bind(_this);
+    _this.changeToCreateMode = _this.changeToCreateMode.bind(_this);
     return _this;
   }
 
@@ -63,15 +64,11 @@ var WholePage = function (_React$Component) {
             ),
             React.createElement(
               "button",
-              { id: "review-button", type: "button", name: "button" /* onClick={some add function}*/ },
+              { id: "review-button", type: "button", name: "button", onClick: this.changeToCreateMode },
               "Add"
             )
           ),
-          React.createElement(
-            "p",
-            null,
-            " Review shtuff goes here "
-          ),
+          React.createElement(ReviewCardMain, null),
           React.createElement(Footer, null)
         );
       }
@@ -84,6 +81,12 @@ var WholePage = function (_React$Component) {
     value: function changeToReviewMode() {
       console.log("changeToReviewMode.");
       this.setState({ view: "review" });
+    }
+  }, {
+    key: "changeToCreateMode",
+    value: function changeToCreateMode() {
+      console.log("changeToCreateMode.");
+      this.setState({ view: "create" });
     }
   }]);
 
@@ -159,11 +162,59 @@ var CreateCardMain = function (_React$Component2) {
 var ReviewCardMain = function (_React$Component3) {
   _inherits(ReviewCardMain, _React$Component3);
 
-  function ReviewCardMain() {
+  function ReviewCardMain(props) {
     _classCallCheck(this, ReviewCardMain);
 
-    return _possibleConstructorReturn(this, (ReviewCardMain.__proto__ || Object.getPrototypeOf(ReviewCardMain)).apply(this, arguments));
+    var _this3 = _possibleConstructorReturn(this, (ReviewCardMain.__proto__ || Object.getPrototypeOf(ReviewCardMain)).call(this, props));
+
+    _this3.CheckReturn = _this3.CheckReturn.bind(_this3);
+    _this3.NextCard = _this3.NextCard.bind(_this3);
+    _this3.ReviewCard = _this3.ReviewCard.bind(_this3);
+    return _this3;
   }
+
+  _createClass(ReviewCardMain, [{
+    key: "render",
+    value: function render() {
+      return this.ReviewCard();
+    }
+  }, {
+    key: "CheckReturn",
+    value: function CheckReturn(event) {
+      if (event.charCode == 13) {
+        console.log("click is triggered?");
+        requestComparison();
+      }
+    }
+  }, {
+    key: "NextCard",
+    value: function NextCard() {
+      requestCard();
+    }
+  }, {
+    key: "ReviewCard",
+    value: function ReviewCard() {
+      return React.createElement(
+        "div",
+        { className: "cards" },
+        React.createElement(
+          "div",
+          { className: "review-cardside" },
+          React.createElement(
+            "div",
+            { id: "displayAnswer" },
+            React.createElement("p", { "data-placeholder": "Correct answer goes here...", id: "correct-answer" })
+          ),
+          React.createElement("textarea", { id: "type-answer", placeholder: "Type Answer", onKeyPress: this.CheckReturn })
+        ),
+        React.createElement(
+          "button",
+          { id: "next-button", type: "button", name: "button", onClick: this.NextCard },
+          "Next"
+        )
+      );
+    }
+  }]);
 
   return ReviewCardMain;
 }(React.Component);

@@ -41,11 +41,14 @@ function requestCard() {
   }
 
   xhr.onload = function() {
-    let responseStr = xhr.responseText;  
-    let cardObject = JSON.parse(responseStr);  
+    let responseStr = xhr.responseText;
+    let cardObject = JSON.parse(responseStr);
 
+    console.log("HEREEEE");
     console.log(cardObject);
-    /* insert function(s) that loads new cards onto page */
+    let cardLangReview = cardObject.korean;
+    let displayLang = document.getElementById("correct-answer");
+    displayLang.textContent =  cardLangReview;
   }
 
   xhr.onerror = function() {
@@ -99,6 +102,54 @@ function storeResponse() {
 
   xhr.onload = function() {
     let responseStr = xhr.responseText;  // get the JSON string
+  }
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
+  // Actually send request to server
+  xhr.send();
+}
+
+function requestComparison() {
+  let english = document.getElementById("type-answer").value;
+  let korean = document.getElementById("correct-answer").textContent;
+  let url = "comparsion?english=" + english + "&korean=" + korean;
+
+  console.log("???????")
+  let xhr = createRequest('GET', url);
+
+  if (!xhr) {
+   alert('Request not supported');
+   return;
+  }
+
+  xhr.onload = function() {
+    let responseStr = xhr.responseText;
+    let cardObject = JSON.parse(responseStr);
+
+    console.log("requestComparison!!!!! YESSjj");
+    console.log(cardObject);
+    console.log("original: ", english);
+    console.log("returned: ", cardObject.english);
+    if(cardObject.english == english){
+      console.log("CORRECT");
+      let correctAnswerElement = document.getElementById("correct-answer");
+      correctAnswerElement.textContent = "CORRECT!";
+      correctAnswerElement.style.color = "green";
+      correctAnswerElement.style.border = "1px solid green";
+    } else {
+      console.log("Wrongggg");
+      let correctAnswer = cardObject.english;
+      let correctAnswerElement = document.getElementById("correct-answer");
+      correctAnswerElement.textContent = correctAnswer;
+    }
+
+
+    // let cardLangReview = cardObject.english;
+    // let displayLang = document.getElementById("correct-answer");
+    // displayLang.textContent =  cardLangReview;
   }
 
   xhr.onerror = function() {

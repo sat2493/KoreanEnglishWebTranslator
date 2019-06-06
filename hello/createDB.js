@@ -9,7 +9,7 @@ const db = new sqlite3.Database(dbFileName);  // object, not database.
 // Initialize table.
 // If the table already exists, causes an error.
 // Fix the error by removing or renaming Flashcards.db
-let cmdStr = 'CREATE TABLE Flashcards (user int, english int, korean int, seen string, correct string)';
+let cmdStr = 'CREATE TABLE Flashcards (user int, english string, korean string, seen int, correct int)';
 db.run(cmdStr,tableCreationCallback);
 
 /*function addColumns(db) {
@@ -32,8 +32,8 @@ db.run(cmdStr,tableCreationCallback);
     }
 }*/
 
-cmdStr = 'CREATE TABLE User (first string, last string, id int)';
-db.run(cmdStr,tableCreationCallback);
+// cmdStr = 'CREATE TABLE User (first string, last string, id int)';
+// db.run(cmdStr,tableCreationCallback);
 
 // Always use the callback for database operations and print out any
 // error messages you get.
