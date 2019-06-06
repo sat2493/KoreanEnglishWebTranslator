@@ -184,6 +184,25 @@ var ReviewCardMain = function (_React$Component3) {
       if (event.charCode == 13) {
         console.log("click is triggered?");
         requestComparison();
+
+        var card = document.getElementById('card-container');
+
+        if (card.classList.contains("hover")) {
+          card.classList.remove("hover");
+        } else {
+          card.classList.add("hover");
+        }
+      }
+    }
+  }, {
+    key: "Flip",
+    value: function Flip() {
+      var card = document.getElementById('card-container');
+
+      if (card.classList.contains("hover")) {
+        card.classList.remove("hover");
+      } else {
+        card.classList.add("hover");
       }
     }
   }, {
@@ -203,7 +222,16 @@ var ReviewCardMain = function (_React$Component3) {
           React.createElement(
             "div",
             { id: "displayAnswer" },
-            React.createElement("p", { "data-placeholder": "Correct answer goes here...", id: "correct-answer" })
+            React.createElement(
+              "div",
+              { id: "card-container", className: "card-container", onClick: this.Flip },
+              React.createElement(
+                "div",
+                { className: "card-body" },
+                React.createElement(CardBack, null),
+                React.createElement(CardFront, null)
+              )
+            )
           ),
           React.createElement("textarea", { id: "type-answer", placeholder: "Type Answer", onKeyPress: this.CheckReturn })
         ),
@@ -219,6 +247,158 @@ var ReviewCardMain = function (_React$Component3) {
   return ReviewCardMain;
 }(React.Component);
 
+/*
+   This flipcard component is based on the flipcard component by
+   Alex Devero, at:
+
+      https://reactjsexample.com/react-flipping-card-with-tutorial/
+
+   It was modified for ECS 162 by Nina Amenta, May 2019.
+*/
+
+var cardContainer = document.querySelector('.react-card');
+
+// React component for form inputs
+
+var CardInput = function (_React$Component4) {
+  _inherits(CardInput, _React$Component4);
+
+  function CardInput() {
+    _classCallCheck(this, CardInput);
+
+    return _possibleConstructorReturn(this, (CardInput.__proto__ || Object.getPrototypeOf(CardInput)).apply(this, arguments));
+  }
+
+  _createClass(CardInput, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "fieldset",
+        null,
+        React.createElement("input", { name: this.props.name, id: this.props.id, type: this.props.type || 'text', placeholder: this.props.placeholder, required: true })
+      );
+    }
+  }]);
+
+  return CardInput;
+}(React.Component);
+
+// React component for textarea
+
+
+var CardTextarea = function (_React$Component5) {
+  _inherits(CardTextarea, _React$Component5);
+
+  function CardTextarea() {
+    _classCallCheck(this, CardTextarea);
+
+    return _possibleConstructorReturn(this, (CardTextarea.__proto__ || Object.getPrototypeOf(CardTextarea)).apply(this, arguments));
+  }
+
+  _createClass(CardTextarea, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "fieldset",
+        null,
+        React.createElement("textarea", { name: this.props.name, id: this.props.id, placeholder: this.props.placeholder, required: true })
+      );
+    }
+  }]);
+
+  return CardTextarea;
+}(React.Component);
+
+// React component for the front side of the card
+
+
+var CardFront = function (_React$Component6) {
+  _inherits(CardFront, _React$Component6);
+
+  function CardFront() {
+    _classCallCheck(this, CardFront);
+
+    return _possibleConstructorReturn(this, (CardFront.__proto__ || Object.getPrototypeOf(CardFront)).apply(this, arguments));
+  }
+
+  _createClass(CardFront, [{
+    key: "render",
+    value: function render(props) {
+      return React.createElement(
+        "div",
+        { className: "card-side side-front" },
+        React.createElement("img", { src: "arrows.png", className: "arrowsjpg" }),
+        React.createElement(
+          "div",
+          { className: "card-side-container" },
+          React.createElement("h2", { id: "guess-answer" })
+        )
+      );
+    }
+  }]);
+
+  return CardFront;
+}(React.Component);
+
+// React component for the back side of the card
+
+
+var CardBack = function (_React$Component7) {
+  _inherits(CardBack, _React$Component7);
+
+  function CardBack() {
+    _classCallCheck(this, CardBack);
+
+    return _possibleConstructorReturn(this, (CardBack.__proto__ || Object.getPrototypeOf(CardBack)).apply(this, arguments));
+  }
+
+  _createClass(CardBack, [{
+    key: "render",
+    value: function render(props) {
+      return React.createElement(
+        "div",
+        { className: "card-side side-back" },
+        React.createElement("img", { src: "arrows.png", className: "arrowsjpg" }),
+        React.createElement(
+          "div",
+          { className: "card-side-container" },
+          React.createElement("h2", { id: "correct-answer" })
+        )
+      );
+    }
+  }]);
+
+  return CardBack;
+}(React.Component);
+
+// React component for the card (main component)
+// class Card extends React.Component {
+//   render() {
+//     return(
+//       <div className="cards">
+//         <div className="review-cardside">
+//           <div id="displayAnswer">
+//             <p data-placeholder="Correct answer goes here..." id="correct-answer"></p>
+//               <div className='card-container'>
+//                 <div className='card-body'>
+//                   <CardBack text="Correct!" />
+//
+//                   <CardFront text="Volare" />
+//                 </div>
+//               </div>
+//           </div>
+//           <textarea id="type-answer" placeholder="Type Answer" onKeyPress={this.CheckReturn}></textarea>
+//         </div>
+//         <button id="next-button" type="button" name="button" onClick={this.NextCard}>Next</button>
+//       </div>
+//     )
+//   }
+// }
+
+// Render Card component
+// ReactDOM.render(<Card />, cardContainer);
+
+
 function Footer() {
   return React.createElement(
     "footer",
@@ -231,4 +411,3 @@ var element = React.createElement(WholePage, null);
 
 ReactDOM.render(element, document.getElementById('root'));
 requestUsername();
-

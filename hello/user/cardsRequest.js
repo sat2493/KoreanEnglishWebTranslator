@@ -47,7 +47,7 @@ function requestCard() {
     console.log("HEREEEE");
     console.log(cardObject);
     let cardLangReview = cardObject.korean;
-    let displayLang = document.getElementById("correct-answer");
+    let displayLang = document.getElementById("guess-answer");
     displayLang.textContent =  cardLangReview;
   }
 
@@ -114,7 +114,7 @@ function storeResponse() {
 
 function requestComparison() {
   let english = document.getElementById("type-answer").value;
-  let korean = document.getElementById("correct-answer").textContent;
+  let korean = document.getElementById("guess-answer").textContent;
   let url = "comparsion?english=" + english + "&korean=" + korean;
 
   console.log("???????")
@@ -131,9 +131,10 @@ function requestComparison() {
 
     console.log("requestComparison!!!!! YESSjj");
     console.log(cardObject);
-    console.log("original: ", english);
-    console.log("returned: ", cardObject.english);
-    if(cardObject.english == english){
+    english = english.replace(/(\r\n|\n|\r)/gm, "");
+    console.log("original: ", english, "+++++");
+    console.log("returned: ", cardObject.english, "+++++");
+    if(cardObject.english === "maybe?"){
       console.log("CORRECT");
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = "CORRECT!";
@@ -144,6 +145,8 @@ function requestComparison() {
       let correctAnswer = cardObject.english;
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = correctAnswer;
+      correctAnswerElement.style.color = "black";
+      correctAnswerElement.style.border = "none";
     }
 
 
