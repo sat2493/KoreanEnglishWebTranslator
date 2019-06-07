@@ -18,11 +18,9 @@ db.run(cmdStr,tableCreationCallback);
     columns.push('ALTER TABLE Flashcards ADD korean int');
     columns.push('ALTER TABLE Flashcards ADD [times seen] string');
     columns.push('ALTER TABLE Flashcards ADD [times correct] string');
-
     for (i = 0; i < 4; i++) {
         db.run(columns[i], columnCreationCallback);
     }
-
     function columnCreationCallback(err) {
         if (err) {
             console.log("Column creation error",err);
@@ -32,8 +30,8 @@ db.run(cmdStr,tableCreationCallback);
     }
 }*/
 
-cmdStr = 'CREATE TABLE User (first string, last string, id int, cookie int, timesLoggedIn int)';
-db.run(cmdStr,tableCreationCallback);
+// cmdStr = 'CREATE TABLE User (first string, last string, id int)';
+// db.run(cmdStr,tableCreationCallback);
 
 // Always use the callback for database operations and print out any
 // error messages you get.

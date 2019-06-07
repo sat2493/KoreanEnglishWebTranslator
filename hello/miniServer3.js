@@ -139,9 +139,6 @@ function cardHandler(req, res, next) {
       let id = currentUser.id;
       console.log("username: ", username);
       res.json( { "id": id, "username" : username} );
-    } else if (cObj.getState != undefined) { 
-      let state = res.user.state;
-      res.json( state );
     } else {
       next();
     }
