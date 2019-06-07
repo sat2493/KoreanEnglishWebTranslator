@@ -136,10 +136,6 @@ function requestComparison() {
       console.log("CORRECT");
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = "CORRECT!";
-      correctAnswerElement.style.color = "green";
-      correctAnswerElement.style.border = "2px solid green";
-      correctAnswerElement.style.padding= "40px 120px 40px 120px";
-      correctAnswerElement.style.backgroundColor= "#caffa8";
     } else {
       console.log("Wrongggg");
       let correctAnswer = cardObject.english;

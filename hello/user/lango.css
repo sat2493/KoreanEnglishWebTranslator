@@ -110,14 +110,12 @@ header {
   height: 326px;
 }
 
-/* #displayAnswer {
-  font-family: Helvetica;
-  font-size: 30pt;
-  border: 2px solid #b3b3b3;
-  width: 800px;
-  height: 300px;
-  margin-bottom: 40px;
-} */
+#correct-answer {
+  color: green;
+  border: 2px solid green;
+  padding: 40px 120px 40px 120px;
+  background-color:  #caffa8;
+}
 
 #outputDiv {
   font-family: Helvetica;
@@ -155,72 +153,8 @@ footer{
   height: 40px;
 }
 
-/* Phone View */
-@media only screen and (max-width: 600px) {
-  .cardside {
-    flex-direction: column;
-  }
-  #save-button {
-    margin-top: 30px;
-    margin-left: 215px;
-    font-size: 17pt;
-    border-radius: 5px;
-    padding: 4px 25px 4px 25px;
-  }
-  .cardside textarea {
-    width: 280px;
-    height: 166px;
-    font-size: 20pt;
-    margin-right: 0px;
-    margin-bottom: 20px;
-  }
-  #outputDiv {
-    width: 280px;
-    height: 160px;
-  }
-  #logo {
-    font-size: 25pt;
-  }
-  #review-button {
-    font-size: 10pt;
-    padding: 6px 8px 6px 8px;
-    margin-top: 30px;
-    margin-left: 10px;
-    border-radius: 5px;
-  }
-  .cards {
-    margin-top: 40px;
-  }
-  p:empty:not(:focus)::before {
-    font-size: 26px;
-  }
-  footer {
-    font-size: 17pt;
-    height: 30px;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*- Typograpy and resets -*/
-html {
+/* html {
   font-size: 16px;
 }
 
@@ -228,7 +162,7 @@ body {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 100%;
   background-color: #fff;
-}
+} */
 
 .arrowsjpg {
   width: 70px;
@@ -322,38 +256,68 @@ h2 {
           transform: rotateY(180deg);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Phone View */
+@media only screen and (max-width: 600px) {
+  .cardside {
+    flex-direction: column;
+  }
+  #save-button, #next-button {
+    margin-top: 30px;
+    margin-left: 215px;
+    font-size: 17pt;
+    border-radius: 5px;
+    padding: 4px 25px 4px 25px;
+  }
+  .cardside textarea {
+    width: 280px;
+    height: 166px;
+    font-size: 20pt;
+    margin-right: 0px;
+    margin-bottom: 20px;
+  }
+  #outputDiv {
+    width: 280px;
+    height: 160px;
+  }
+  #logo {
+    font-size: 25pt;
+  }
+  #review-button {
+    font-size: 10pt;
+    padding: 6px 8px 6px 8px;
+    margin-top: 30px;
+    margin-left: 10px;
+    border-radius: 5px;
+  }
+  .cards {
+    margin-top: 40px;
+  }
+  p:empty:not(:focus)::before {
+    font-size: 26px;
+  }
+  footer {
+    font-size: 17pt;
+    height: 30px;
+  }
+  #correct-answer {
+    padding: 10px 40px 10px 40px;
+  }
+  #card-container {
+    width: 280px;
+    height: 200px;
+  }
+  .review-cardside textarea {
+    width: 280px;
+  }
+  .arrowsjpg {
+    width: 40px;
+    height: 30px;
+    margin-top: -200px;
+  }
+  .review-cardside textarea {
+    font-size: 20px;
+  }
+}
 
 /* iPad View */
 @media only screen
