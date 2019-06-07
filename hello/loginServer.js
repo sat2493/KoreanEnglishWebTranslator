@@ -144,8 +144,10 @@ function isAuthenticated(req, res, next) {
 
         // if (req.user.timesLoggedIn < 2) 
         if (req.user.timesLoggedIn < 2) {
+          req.user.state = { view: "create" };
           // redirect to create
         } else {
+          req.user.state = { view: "review" };
           // redirect to review
         }
 
@@ -240,7 +242,7 @@ function checkExistingUser(first, last, id, currentTime) {
               let timesLoggedIn = data[0].timesLoggedIn + 1;
               let newSession = currentTime;
 
-              let cmdStr = "UPDATE User SET timesLoggedIn = " + timesLoggedIn + " WHERE id = " + id;
+              cmdStr = "UPDATE User SET timesLoggedIn = " + timesLoggedIn + " WHERE id = " + id;
               db.run(cmdStr);
               let cmdStr = "UPDATE User SET cookie = " + newSession + " WHERE id = " + id;
               db.run(cmdStr);

@@ -6,7 +6,7 @@ class WholePage extends React.Component {
     super(props);
 
     // set the default value of this.state to the create cards view just for now, and testing purposes
-    this.state = { view: "create" };
+    this.state = { view: "" };
     //this.Header = this.Header.bind(this);
     this.changeToReviewMode = this.changeToReviewMode.bind(this);
     this.changeToCreateMode = this.changeToCreateMode.bind(this);
@@ -30,7 +30,7 @@ class WholePage extends React.Component {
           <Footer/>
         </main>
       );
-    } else {
+    } else if (this.state.view == "review") {
         return (
           <main>
             <header id="header">
@@ -46,10 +46,40 @@ class WholePage extends React.Component {
             <Footer/>
           </main>
         );
-    }
+    } else { return null; }
   }
 
-  componentDidMount() { /*requestUsername();*/ }
+  componentDidMount() { 
+    this.requestState();
+  }
+
+  requestState() {
+    let url = "card?getState=true";
+    let xhr = createRequest('GET', url);
+
+    if (!xhr) {
+     alert('Request not supported');
+     return;
+    }
+
+    xhr.onload = function() {
+      let responseStr = xhr.responseText;
+      let stateObject = JSON.parse(responseStr);
+
+      console.log(stateObject);
+      let state = stateObject.view;
+      if (state.view === "review") { this.changeToCreateMode(); }
+      else { this.changeToReviewMode(); }
+    }
+
+    xhr.onerror = function() {
+      alert('Woops, there was an error making the request.');
+    };
+
+    // Actually send request to server
+    xhr.send();
+  }
+
 
   changeToReviewMode() {
     console.log("changeToReviewMode.");

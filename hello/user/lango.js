@@ -18,7 +18,7 @@ var WholePage = function (_React$Component) {
     // set the default value of this.state to the create cards view just for now, and testing purposes
     var _this = _possibleConstructorReturn(this, (WholePage.__proto__ || Object.getPrototypeOf(WholePage)).call(this, props));
 
-    _this.state = { view: "create" };
+    _this.state = { view: "" };
     //this.Header = this.Header.bind(this);
     _this.changeToReviewMode = _this.changeToReviewMode.bind(_this);
     _this.changeToCreateMode = _this.changeToCreateMode.bind(_this);
@@ -50,7 +50,7 @@ var WholePage = function (_React$Component) {
           React.createElement(CreateCardMain, null),
           React.createElement(Footer, null)
         );
-      } else {
+      } else if (this.state.view == "review") {
         return React.createElement(
           "main",
           null,
@@ -71,11 +71,46 @@ var WholePage = function (_React$Component) {
           React.createElement(ReviewCardMain, null),
           React.createElement(Footer, null)
         );
+      } else {
+        return null;
       }
     }
   }, {
     key: "componentDidMount",
-    value: function componentDidMount() {/*requestUsername();*/}
+    value: function componentDidMount() {
+      this.requestState();
+    }
+  }, {
+    key: "requestState",
+    value: function requestState() {
+      var url = "card?getState=true";
+      var xhr = createRequest('GET', url);
+
+      if (!xhr) {
+        alert('Request not supported');
+        return;
+      }
+
+      xhr.onload = function () {
+        var responseStr = xhr.responseText;
+        var stateObject = JSON.parse(responseStr);
+
+        console.log(stateObject);
+        var state = stateObject.view;
+        if (state.view === "review") {
+          this.changeToCreateMode();
+        } else {
+          this.changeToReviewMode();
+        }
+      };
+
+      xhr.onerror = function () {
+        alert('Woops, there was an error making the request.');
+      };
+
+      // Actually send request to server
+      xhr.send();
+    }
   }, {
     key: "changeToReviewMode",
     value: function changeToReviewMode() {
