@@ -54,11 +54,26 @@ function comparsionHandler(req, res, next) {
     }
 }
 
+function updateSeen(user, korean) {
+  let count = "SELECT seen FROM flashcards WHERE user =? AND korean=?";
+  db.all(count,[user, korean], updateCount);
+
+  function updateCount( err, UpdateCardCount ) {
+    let seen = UpdateCardCount[0].seen;
+    let value1 = seen + 1;
+    console.log("updateSeen value = ", value1);
+
+    let cmdStr = 'UPDATE flashcards SET seen=? WHERE user =? AND korean=?';
+    db.run(cmdStr,[value1,user, korean]);
+  }
+}
+
 function findCard(user, korean, res) {
+    updateSeen(user, korean);
     // get user's saved cards library
     let sql1 = "SELECT * FROM flashcards WHERE user =? AND korean=?";
     db.all(sql1,[user, korean], userCard);
-    // db.all ( 'SELECT * FROM flashcards WHERE user = ' + user + ' AND korean = ' + korean, userCard);
+
     // after receiving an answer to SQL query, pick a random card from user's saved library
     function userCard( err, SavedCards ) {
       let numSavedCards = SavedCards.length;
@@ -87,7 +102,9 @@ function incrementSeenHandler(req, res, next) {
   let sObj = req.query;
   let currentUser = req.user;
 
-  findCard(currentUser.id, sObj.korean, res);
+  console.log("HEREEEEE ABOUT TO INCREMENT!!!!!!")
+
+  // findCard(currentUser.id, sObj.korean, res);
 }
 
 function cardHandler(req, res, next) {
@@ -224,7 +241,7 @@ app.use(express.static('public'));
 app.get('/query', queryHandler );   // if not, is it a valid query?
 app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
-// app.get('/comparsion', comparsionHandler );
+app.get('/comparsion', comparsionHandler );
 app.post('/seen/:id', incrementSeenHandler)
 app.use( fileNotFound );            // otherwise not found
 
@@ -232,7 +249,7 @@ app.use( fileNotFound );            // otherwise not found
 exports.queryHandler = queryHandler;
 exports.translateHandler = translateHandler;
 exports.storeHandler = storeHandler;
-// exports.comparsionHandler = comparsionHandler;
+exports.comparsionHandler = comparsionHandler;
 exports.incrementSeenHandler = incrementSeenHandler;
 exports.cardHandler = cardHandler;
 exports.makeAPIRequest = makeAPIRequest

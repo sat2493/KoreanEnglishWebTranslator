@@ -164,29 +164,29 @@ function requestComparison() {
 }
 
 
-function updateSeen() {
-  let english = document.getElementById("type-answer").value;
-  let korean = document.getElementById("guess-answer").textContent;
-  let url = "seen?english=" + english + "&korean=" + korean;
-
-  let xhr = createRequest('GET', url);
-
-  if (!xhr) {
-   alert('Request not supported');
-   return;
-  }
-
-  xhr.onload = function() {
-    let responseStr = xhr.responseText;  // get the JSON string
-    let object = JSON.parse(responseStr);  // turn it into an object
-    //
-    // let output = document.getElementById("outputGoesHere");
-    // output.textContent = object.data.translations[0].translatedText;
-  }
-
-  xhr.onerror = function() {
-    alert('Woops, there was an error making the request.');
-  };
-
-  xhr.send();
-}
+// function updateSeen() {
+//   let english = document.getElementById("type-answer").value;
+//   let korean = document.getElementById("guess-answer").textContent;
+//   let url = "seen?english=" + english + "&korean=" + korean;
+//
+//   let xhr = createRequest('GET', url);
+//
+//   if (!xhr) {
+//    alert('Request not supported');
+//    return;
+//   }
+//
+//   xhr.onload = function() {
+//     let responseStr = xhr.responseText;  // get the JSON string
+//     let object = JSON.parse(responseStr);  // turn it into an object
+//     //
+//     // let output = document.getElementById("outputGoesHere");
+//     // output.textContent = object.data.translations[0].translatedText;
+//   }
+//
+//   xhr.onerror = function() {
+//     alert('Woops, there was an error making the request.');
+//   };
+//
+//   xhr.send();
+// }
