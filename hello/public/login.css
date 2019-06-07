@@ -25,7 +25,7 @@ html, body {
   font-size: 25px;
   color: white;
   text-align: center;
-  
+
   background: -webkit-linear-gradient(left top, #606B9B, #B191D4);
   background: -o-linear-gradient(bottom right, #606B9B, #B191D4);
   background: -moz-linear-gradient(bottom right, #606B9B, #B191D4);
@@ -97,3 +97,67 @@ html, body {
   font-family: 'Open Sans';
 }
 
+/* Phone View */
+@media only screen and (max-width: 600px) {
+  #root {
+    display: block;
+  }
+  #left {
+    block-size: 450px;
+  }
+  #right {
+    margin-top: 80px;
+  }
+  #title {
+    font-size: 35px;
+  }
+  #caption {
+    font-size: 15px;
+  }
+  #buttonDiv {
+    padding-left: 18.52%;
+    padding-right: 18.5%;
+  }
+}
+
+/* iPad View */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)  {
+  #root {
+    display: block;
+  }
+  #left {
+    block-size: 800px;
+  }
+  #right {
+    margin-top: 100px;
+  }
+  #title {
+    font-size: 75px;
+  }
+  #caption {
+    font-size: 30px;
+  }
+}
+
+/* iPad Pro View */
+@media only screen
+and (min-device-width : 1024px)
+and (max-device-width : 1366px)  {
+  #root {
+    display: block;
+  }
+  #left {
+    block-size: 1000px;
+  }
+  #right {
+    margin-top: 150px;
+  }
+  #title {
+    font-size: 90px;
+  }
+  #caption {
+    font-size: 50px;
+  }
+}
