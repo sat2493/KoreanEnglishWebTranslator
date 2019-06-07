@@ -81,6 +81,7 @@ var WholePage = function (_React$Component) {
     value: function changeToReviewMode() {
       console.log("changeToReviewMode.");
       this.setState({ view: "review" });
+      requestCard();
     }
   }, {
     key: "changeToCreateMode",
@@ -184,8 +185,7 @@ var ReviewCardMain = function (_React$Component3) {
       if (event.charCode == 13) {
         console.log("click is triggered?");
         requestComparison();
-        // console.log("Card id; ", card.id);
-        // this.makeRequest("/seen/" + card.id, 'POST', null);
+        // makeRequest("seen/" + this.props.id, 'POST', null);
 
         var card = document.getElementById('card-container');
 
@@ -413,3 +413,4 @@ var element = React.createElement(WholePage, null);
 
 ReactDOM.render(element, document.getElementById('root'));
 requestUsername();
+

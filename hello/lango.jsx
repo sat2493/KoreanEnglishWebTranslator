@@ -54,6 +54,7 @@ class WholePage extends React.Component {
   changeToReviewMode() {
     console.log("changeToReviewMode.");
     this.setState({ view: "review" });
+    requestCard();
   }
 
   changeToCreateMode() {
@@ -120,7 +121,7 @@ class ReviewCardMain extends React.Component {
     if(event.charCode == 13) {
       console.log("click is triggered?")
       requestComparison();
-      updateSeen();
+      // makeRequest("seen/" + this.props.id, 'POST', null);
 
       let card = document.getElementById('card-container');
 
