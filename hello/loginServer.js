@@ -12,8 +12,8 @@ const APIkey = "AIzaSyCSv_GLy2wLNLtQywe-aVYp_sPxd6kexfs";
 // const APIkey = "AIzaSyBhtPM5vNlbgCTdW8vtuswPJPFsE2nUaEU";
 const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
-const port = 59265;
-// const port = 52520;
+// const port = 59265;
+const port = 52520;
 const GoogleStrategy = require('passport-google-oauth20');
 
 const sqlite3 = require("sqlite3").verbose();
@@ -29,14 +29,16 @@ const db = new sqlite3.Database(dbFileName);
 // information, packed into a redirect response that redirects to
 // server162.site:[port]/auth/redirect
 const googleLoginData = {
-    // clientID: '417836023693-affb7o9mpc4usu27eqt5nr3djdssbia8.apps.googleusercontent.com',
-    // clientSecret: 'XckiOSmEMObQJO_KIGTiziHl',
-    // callbackURL: '/auth/redirect'
-
-    clientID: '694960105206-tj52n2ec2qd7iq1hll08fvk9roj9l643.apps.googleusercontent.com',
-    clientSecret: 'JyzYn331tC2K339iOJA7MvEy',
+    clientID: '417836023693-affb7o9mpc4usu27eqt5nr3djdssbia8.apps.googleusercontent.com',
+    clientSecret: 'XckiOSmEMObQJO_KIGTiziHl',
     callbackURL: '/auth/redirect'
+
+    // clientID: '694960105206-tj52n2ec2qd7iq1hll08fvk9roj9l643.apps.googleusercontent.com',
+    // clientSecret: 'JyzYn331tC2K339iOJA7MvEy',
+    // callbackURL: '/auth/redirect'
 };
+
+const maxSession = 21600000;
 
 // Strategy configuration.
 // Tell passport we will be using login with Google, and
@@ -139,6 +141,15 @@ function printURL (req, res, next) {
 function isAuthenticated(req, res, next) {
     console.log("isAuthenticated.");
     if (req.user) {
+
+        // if (req.user.timesLoggedIn < 2) 
+        if (req.user.timesLoggedIn < 2) {
+          // redirect to create
+        } else {
+          // redirect to review
+        }
+
+        // user got reassigned a new cookie
 	console.log("Req.session:",req.session);
 	console.log("Req.user:",req.user);
 	next();
@@ -177,46 +188,82 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     let last = profile.name.familyName;
     // unique user ID will be there google ID
     let id = profile.id;
+    let currentTime = new Date();
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True.
 
-    checkExistingUser(first, last, id);
-
-    done(null, id);
+    checkExistingUser(first, last, id, currentTime);
 }
 
 // checks if user has already used the site in the past
-function checkExistingUser(first, last, id) {
+function checkExistingUser(first, last, id, currentTime) {
     console.log("existingUser");
-    let insert = 'INSERT INTO User (first, last, id) ';
+/*    let insert = 'INSERT INTO User (first, last, id) ';
     let userInformation = 'SELECT \'' + first + '\', \'' + last + '\', ' + id + ' ';
     let ifNotExistingUser = 'WHERE NOT EXISTS (SELECT 1 FROM User WHERE id = ' + id + ')';
-    let cmdStr = insert + userInformation + ifNotExistingUser;
+    let cmdStr = insert + userInformation + ifNotExistingUser; */
+    
+    // get data object with user
+    let cmdStr = 'SELECT * FROM User WHERE id = ' + id;
     console.log(cmdStr);
     db.all(cmdStr, existingUserCallback);
 
-    function existingUserCallback(err) {
-        if (err) {
-            console.log("Error checking if user exists",err);
-        } else {
-            console.log("Checked if user exists");
+    function existingUserCallback(err, data) {
+        if (err) { 
+          console.log("Detected error after sending SQL query"); 
+          done(null, id);
+        }
+        if (data.length === 0) { /* case 1: user has never logged in before */
+
+          let newSession = currentTime;
+
+          // add new user to database and give them a brand new session
+          // done() will be called inside insertUser()
+          insertUser(first, last, id, newSession);
+
+        } else { /* case 2: user has logged in before */
+
+            // this is how long the user has been logged in
+            // I should've named the cookie column, session, instead... but this will do for now
+            let userSessionAge = currentTime - data[0].cookie;
+          
+            // if user hasn't been logged in for more than 6 hours
+            if (userSessionAge < maxSession) {
+
+              // increment the number of times user visited site
+              let timesLoggedIn = data[0].timesLoggedIn + 1;
+              let cmdStr = "UPDATE User SET timesLoggedIn = " + timesLoggedIn + " WHERE id = " + id;
+              db.run(cmdStr);
+              done(null, id);
+            } else { /* user has an expired user sessopm */
+              let timesLoggedIn = data[0].timesLoggedIn + 1;
+              let newSession = currentTime;
+
+              let cmdStr = "UPDATE User SET timesLoggedIn = " + timesLoggedIn + " WHERE id = " + id;
+              db.run(cmdStr);
+              let cmdStr = "UPDATE User SET cookie = " + newSession + " WHERE id = " + id;
+              db.run(cmdStr);
+              done(null, id);
+          }
+
         }
     }
 }
 
 // insert new user into User table
-function insertUser(first, last, id) {
+function insertUser(first, last, id, session) {
     console.log("insertUser.");
-    let cmdStr = 'INSERT INTO User (first, last, id) VALUES (@0, @1, @2)';
+    let cmdStr = 'INSERT INTO User (first, last, id, cookie, timesLoggedIn) VALUES (@0, @1, @2, @3, 1)';
     db.run(cmdStr, first, last, id, userInsertionCallback);
-
 
     function userInsertionCallback(err) {
         if (err) {
             console.log("User insertion error",err);
+            done(null, id);
         } else {
             console.log("Inserted 1 user into User table");
+            done(null, id);
         }
     }
 }
@@ -245,11 +292,14 @@ passport.deserializeUser((dbRowID, done) => {
 
     function sendUsername( err, data ) {
 
-      done(null, false);  // invalidates the existing login session.
-      console.log('Here');
+      // done(null, false);  // invalidates the existing login session.
+      console.log('sendUsername: modify req');
       // save userData into the req object, right here
+
+      // insert session info here
       let un = data[0].first;
-      let userData = {id: dbRowID, username: un};
+      let tli = data[0].timesLoggedIn;
+      let userData = {id: dbRowID, username: un, timesLoggedIn: tli};
 
       done(null, userData);
     }

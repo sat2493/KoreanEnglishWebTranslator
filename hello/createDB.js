@@ -32,8 +32,8 @@ db.run(cmdStr,tableCreationCallback);
     }
 }*/
 
-// cmdStr = 'CREATE TABLE User (first string, last string, id int)';
-// db.run(cmdStr,tableCreationCallback);
+cmdStr = 'CREATE TABLE User (first string, last string, id int, cookie int, timesLoggedIn int)';
+db.run(cmdStr,tableCreationCallback);
 
 // Always use the callback for database operations and print out any
 // error messages you get.
