@@ -379,6 +379,19 @@ and (max-device-width : 1024px)  {
   #logo {
     font-size: 50pt;
   }
+  #next-button {
+    margin-left: 540px;
+  }
+  .card-container {
+    width: 600px;
+    height: 200px;
+  }
+  .review-cardside textarea {
+    width: 600px;
+  }
+  header {
+    margin-bottom: 30px;
+  }
 }
 
 /* iPad Pro View */
@@ -387,5 +400,17 @@ and (min-device-width : 1024px)
 and (max-device-width : 1366px)  {
   #save-button {
     margin-left: 685px;
+  }
+  #next-button {
+    margin-left: 680px;
+  }
+  #review-button {
+    font-size: 20pt;
+    padding: 10px 20px 10px 20px;
+    margin-top: 50px;
+    margin-left: 30px;
+  }
+  header {
+    margin-bottom: 30px;
   }
 }
