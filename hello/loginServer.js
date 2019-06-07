@@ -245,7 +245,7 @@ passport.deserializeUser((dbRowID, done) => {
 
     function sendUsername( err, data ) {
 
-      done(null, false);  // invalidates the existing login session.
+//      done(null, false);  // invalidates the existing login session.
       console.log('Here');
       // save userData into the req object, right here
       let un = data[0].first;
