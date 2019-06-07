@@ -48,7 +48,8 @@ function comparsionHandler(req, res, next) {
     if (sObj.english != undefined) {
       console.log("INSIDEE COMPARSIONSNN")
       console.log("sObj.english", sObj.english, " sObj.korean", sObj.korean)
-      findCard(currentUser.id, sObj.korean, res);
+      updateSeen(currentUser.id, sObj.korean);
+      findCard(currentUser.id, sObj.english, sObj.korean, res);
     } else {
       next();
     }
@@ -68,8 +69,25 @@ function updateSeen(user, korean) {
   }
 }
 
-function findCard(user, korean, res) {
-    updateSeen(user, korean);
+function updateCorrect(user, korean, guess, dbreturn) {
+  let count = "SELECT correct FROM flashcards WHERE user =? AND korean=?";
+  db.all(count,[user, korean], updateCount);
+
+  function updateCount( err, UpdateCardCount ) {
+
+    if (guess === dbreturn){
+      console.log("Correct guess");
+      let correct = UpdateCardCount[0].correct;
+      let value1 = correct + 1;
+      console.log("updateCorrect value = ", value1);
+
+      let cmdStr = 'UPDATE flashcards SET correct=? WHERE user =? AND korean=?';
+      db.run(cmdStr,[value1,user, korean]);
+    }
+  }
+}
+
+function findCard(user, guess, korean, res) {
     // get user's saved cards library
     let sql1 = "SELECT * FROM flashcards WHERE user =? AND korean=?";
     db.all(sql1,[user, korean], userCard);
@@ -80,6 +98,9 @@ function findCard(user, korean, res) {
       console.log("numSavedCards: ", numSavedCards);
       console.log("THIS IS THe card: ", SavedCards[0]);
       let chosenCard = SavedCards[0];
+
+
+      updateCorrect(user, korean, guess, SavedCards[0].english);
       res.send(chosenCard);
     }
 }
