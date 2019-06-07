@@ -120,6 +120,7 @@ class ReviewCardMain extends React.Component {
     if(event.charCode == 13) {
       console.log("click is triggered?")
       requestComparison();
+      updateSeen();
 
       let card = document.getElementById('card-container');
 
@@ -228,10 +229,10 @@ class CardFront extends React.Component {
   render(props) {
     return(
       <div className='card-side side-front'>
-        <img src="arrows.png" className="arrowsjpg" />
          <div className='card-side-container'>
               <h2 id="guess-answer"></h2>
         </div>
+        <img src="arrows.png" className="arrowsjpg" />
       </div>
     )
   }
@@ -242,10 +243,10 @@ class CardBack extends React.Component {
   render(props) {
     return(
       <div className='card-side side-back'>
-        <img src="arrows.png" className="arrowsjpg" />
          <div className='card-side-container'>
               <h2 id="correct-answer"></h2>
         </div>
+        <img src="arrows.png" className="arrowsjpg" />
       </div>
     )
   }

@@ -134,7 +134,7 @@ function requestComparison() {
     english = english.replace(/(\r\n|\n|\r)/gm, "");
     console.log("original: ", english, "+++++");
     console.log("returned: ", cardObject.english, "+++++");
-    if(cardObject.english === "maybe?"){
+    if(cardObject.english === english){
       console.log("CORRECT");
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = "CORRECT!";
@@ -160,5 +160,33 @@ function requestComparison() {
   };
 
   // Actually send request to server
+  xhr.send();
+}
+
+
+function updateSeen() {
+  let english = document.getElementById("type-answer").value;
+  let korean = document.getElementById("guess-answer").textContent;
+  let url = "seen?english=" + english + "&korean=" + korean;
+
+  let xhr = createRequest('GET', url);
+
+  if (!xhr) {
+   alert('Request not supported');
+   return;
+  }
+
+  xhr.onload = function() {
+    let responseStr = xhr.responseText;  // get the JSON string
+    let object = JSON.parse(responseStr);  // turn it into an object
+    //
+    // let output = document.getElementById("outputGoesHere");
+    // output.textContent = object.data.translations[0].translatedText;
+  }
+
+  xhr.onerror = function() {
+    alert('Woops, there was an error making the request.');
+  };
+
   xhr.send();
 }

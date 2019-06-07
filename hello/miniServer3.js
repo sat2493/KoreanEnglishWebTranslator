@@ -82,6 +82,14 @@ function storeHandler(req, res, next) {
     }
 }
 
+function incrementSeenHandler(req, res, next) {
+  let url = req.url;
+  let sObj = req.query;
+  let currentUser = req.user;
+
+  findCard(currentUser.id, sObj.korean, res);
+}
+
 function cardHandler(req, res, next) {
     let url = req.url;
     let cObj = req.query;
@@ -216,15 +224,16 @@ app.use(express.static('public'));
 app.get('/query', queryHandler );   // if not, is it a valid query?
 app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
-app.get('/comparsion', comparsionHandler );
-// app.post('seen/:id', incrementSeenHandler)
+// app.get('/comparsion', comparsionHandler );
+app.post('/seen/:id', incrementSeenHandler)
 app.use( fileNotFound );            // otherwise not found
 
 // export our miniServer3.js functions so loginServer.js can access them
 exports.queryHandler = queryHandler;
 exports.translateHandler = translateHandler;
 exports.storeHandler = storeHandler;
-exports.comparsionHandler = comparsionHandler;
+// exports.comparsionHandler = comparsionHandler;
+exports.incrementSeenHandler = incrementSeenHandler;
 exports.cardHandler = cardHandler;
 exports.makeAPIRequest = makeAPIRequest
 // exports.incrementSeenHandler = incrementSeenHandler;

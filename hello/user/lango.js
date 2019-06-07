@@ -327,12 +327,12 @@ var CardFront = function (_React$Component6) {
       return React.createElement(
         "div",
         { className: "card-side side-front" },
-        React.createElement("img", { src: "arrows.png", className: "arrowsjpg" }),
         React.createElement(
           "div",
           { className: "card-side-container" },
           React.createElement("h2", { id: "guess-answer" })
-        )
+        ),
+        React.createElement("img", { src: "arrows.png", className: "arrowsjpg" })
       );
     }
   }]);
@@ -358,12 +358,12 @@ var CardBack = function (_React$Component7) {
       return React.createElement(
         "div",
         { className: "card-side side-back" },
-        React.createElement("img", { src: "arrows.png", className: "arrowsjpg" }),
         React.createElement(
           "div",
           { className: "card-side-container" },
           React.createElement("h2", { id: "correct-answer" })
-        )
+        ),
+        React.createElement("img", { src: "arrows.png", className: "arrowsjpg" })
       );
     }
   }]);
@@ -411,3 +411,4 @@ var element = React.createElement(WholePage, null);
 
 ReactDOM.render(element, document.getElementById('root'));
 requestUsername();
+
