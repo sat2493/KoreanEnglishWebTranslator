@@ -117,7 +117,6 @@ function requestComparison() {
   let korean = document.getElementById("guess-answer").textContent;
   let url = "comparsion?english=" + english + "&korean=" + korean;
 
-  console.log("???????")
   let xhr = createRequest('GET', url);
 
   if (!xhr) {
@@ -129,17 +128,18 @@ function requestComparison() {
     let responseStr = xhr.responseText;
     let cardObject = JSON.parse(responseStr);
 
-    console.log("requestComparison!!!!! YESSjj");
     console.log(cardObject);
     english = english.replace(/(\r\n|\n|\r)/gm, "");
-    console.log("original: ", english, "+++++");
-    console.log("returned: ", cardObject.english, "+++++");
+    // console.log("original: ", english);
+    // console.log("returned: ", cardObject.english);
     if(cardObject.english === english){
       console.log("CORRECT");
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = "CORRECT!";
       correctAnswerElement.style.color = "green";
-      correctAnswerElement.style.border = "1px solid green";
+      correctAnswerElement.style.border = "2px solid green";
+      correctAnswerElement.style.padding= "40px 120px 40px 120px";
+      correctAnswerElement.style.backgroundColor= "#caffa8";
     } else {
       console.log("Wrongggg");
       let correctAnswer = cardObject.english;
@@ -147,12 +147,9 @@ function requestComparison() {
       correctAnswerElement.textContent = correctAnswer;
       correctAnswerElement.style.color = "black";
       correctAnswerElement.style.border = "none";
+      correctAnswerElement.style.padding = "0px";
+      correctAnswerElement.style.backgroundColor= "white";
     }
-
-
-    // let cardLangReview = cardObject.english;
-    // let displayLang = document.getElementById("correct-answer");
-    // displayLang.textContent =  cardLangReview;
   }
 
   xhr.onerror = function() {
@@ -162,31 +159,3 @@ function requestComparison() {
   // Actually send request to server
   xhr.send();
 }
-
-
-// function updateSeen() {
-//   let english = document.getElementById("type-answer").value;
-//   let korean = document.getElementById("guess-answer").textContent;
-//   let url = "seen?english=" + english + "&korean=" + korean;
-//
-//   let xhr = createRequest('GET', url);
-//
-//   if (!xhr) {
-//    alert('Request not supported');
-//    return;
-//   }
-//
-//   xhr.onload = function() {
-//     let responseStr = xhr.responseText;  // get the JSON string
-//     let object = JSON.parse(responseStr);  // turn it into an object
-//     //
-//     // let output = document.getElementById("outputGoesHere");
-//     // output.textContent = object.data.translations[0].translatedText;
-//   }
-//
-//   xhr.onerror = function() {
-//     alert('Woops, there was an error making the request.');
-//   };
-//
-//   xhr.send();
-// }

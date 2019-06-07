@@ -122,10 +122,6 @@ function incrementSeenHandler(req, res, next) {
   let url = req.url;
   let sObj = req.query;
   let currentUser = req.user;
-
-  console.log("HEREEEEE ABOUT TO INCREMENT!!!!!!")
-
-  // findCard(currentUser.id, sObj.korean, res);
 }
 
 function cardHandler(req, res, next) {

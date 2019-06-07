@@ -316,46 +316,11 @@ h2 {
 /*- Back side -*/
 .side-back {
   z-index: 2;
-  padding: 32px;
+  padding: 0px;
   text-align: center;
   -webkit-transform: rotateY(180deg);
           transform: rotateY(180deg);
 }
-
-
-/* input,
-textarea {
-  padding: 8px;
-  width: 100%;
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 1px solid #eee;
-  border-left: 0;
-}
-input:focus,
-textarea:focus {
-  outline: 0;
-  border-bottom: 1px solid #0c81f6;
-}
-
-textarea {
-  max-height: 80px;
-  resize: vertical;
-}
-
-.btn-primary {
-  padding: 8px 16px;
-  font-size: 16px;
-  background-color: #0c81f6;
-  border: none;
-  box-shadow: 0 10px 35px rgba(50, 50, 93, 0.1), 0 2px 15px rgba(0, 0, 0, 0.07);
-  transition: background-color .25s ease-in, box-shadow .25s ease-in;
-}
-
-.btn-primary:focus, .btn-primary:hover {
-  background-color: #56a7f9;
-  box-shadow: 0 18px 35px rgba(50, 50, 93, 0.1), 0 8px 15px rgba(0, 0, 0, 0.07);
-} */
 
 
 
