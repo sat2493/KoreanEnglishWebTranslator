@@ -137,10 +137,33 @@ function cardHandler(req, res, next) {
     } else if (cObj.getUsername != undefined) {
       let username = currentUser.username;
       let id = currentUser.id;
-      console.log("username: ", username);
       res.json( { "id": id, "username" : username} );
+    } else if (cObj.getState != undefined) {
+      findUserCards(currentUser.id, res);
     } else {
       next();
+    }
+}
+
+// function stateHandler(req, res, next) {
+//   let url = req.url;
+//   let sObj = req.query;
+//   let currentUser = req.user;
+//
+//   if (sObj.english != undefined) {
+//     findUserCards(currentUser.id, res);
+//   } else {
+//     next();
+//   }
+// }
+
+function findUserCards(user, res) {
+    // get user's saved cards library
+    let sql1 = "SELECT * FROM flashcards WHERE user =?";
+    db.all(sql1,[user], userCard);
+
+    function userCard( err, SavedCards ) {
+      res.send(SavedCards);
     }
 }
 
@@ -259,7 +282,6 @@ app.get('/query', queryHandler );   // if not, is it a valid query?
 app.get('/translate', translateHandler );
 app.get('/store', storeHandler );
 app.get('/comparsion', comparsionHandler );
-app.post('/seen/:id', incrementSeenHandler)
 app.use( fileNotFound );            // otherwise not found
 
 // export our miniServer3.js functions so loginServer.js can access them
@@ -269,5 +291,4 @@ exports.storeHandler = storeHandler;
 exports.comparsionHandler = comparsionHandler;
 exports.incrementSeenHandler = incrementSeenHandler;
 exports.cardHandler = cardHandler;
-exports.makeAPIRequest = makeAPIRequest
-// exports.incrementSeenHandler = incrementSeenHandler;
+exports.makeAPIRequest = makeAPIRequest;

@@ -15,17 +15,52 @@ var WholePage = function (_React$Component) {
   function WholePage(props) {
     _classCallCheck(this, WholePage);
 
-    // set the default value of this.state to the create cards view just for now, and testing purposes
     var _this = _possibleConstructorReturn(this, (WholePage.__proto__ || Object.getPrototypeOf(WholePage)).call(this, props));
 
     _this.state = { view: "create" };
-    //this.Header = this.Header.bind(this);
     _this.changeToReviewMode = _this.changeToReviewMode.bind(_this);
     _this.changeToCreateMode = _this.changeToCreateMode.bind(_this);
     return _this;
   }
 
   _createClass(WholePage, [{
+    key: "createRequest",
+    value: function createRequest(method, url) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url, true); // call its open method
+      return xhr;
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var url = "card?getState=true";
+      var xhr = createRequest('GET', url);
+
+      if (!xhr) {
+        alert('Request not supported');
+        return;
+      }
+
+      xhr.onload = function () {
+        var responseStr = xhr.responseText;
+        var object = JSON.parse(responseStr);
+
+        if (object && object.length > 0) {
+          this.setState({ view: "review" });
+          requestCard();
+        } else {
+          this.setState({ view: "create" });
+        }
+      }.bind(this);
+
+      xhr.onerror = function () {
+        alert('Woops, there was an error making the request.');
+      };
+
+      // Actually send request to server
+      xhr.send();
+    }
+  }, {
     key: "render",
     value: function render() {
       // for now passes only the CreateCardMain view
@@ -73,9 +108,6 @@ var WholePage = function (_React$Component) {
         );
       }
     }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {/*requestUsername();*/}
   }, {
     key: "changeToReviewMode",
     value: function changeToReviewMode() {
@@ -185,7 +217,6 @@ var ReviewCardMain = function (_React$Component3) {
       if (event.charCode == 13) {
         console.log("click is triggered?");
         requestComparison();
-        // makeRequest("seen/" + this.props.id, 'POST', null);
 
         var card = document.getElementById('card-container');
 
@@ -194,6 +225,10 @@ var ReviewCardMain = function (_React$Component3) {
         } else {
           card.classList.add("hover");
         }
+
+        var typeAnswer = document.getElementById('type-answer');
+
+        typeAnswer.value = "";
       }
     }
   }, {
@@ -363,7 +398,7 @@ var CardBack = function (_React$Component7) {
         React.createElement(
           "div",
           { className: "card-side-container" },
-          React.createElement("h2", { id: "correct-answer" })
+          React.createElement("h2", { id: "correct-answer", className: "correct-answer wrong-answer" })
         ),
         React.createElement("img", { src: "arrows.png", className: "arrowsjpg" })
       );
@@ -372,34 +407,6 @@ var CardBack = function (_React$Component7) {
 
   return CardBack;
 }(React.Component);
-
-// React component for the card (main component)
-// class Card extends React.Component {
-//   render() {
-//     return(
-//       <div className="cards">
-//         <div className="review-cardside">
-//           <div id="displayAnswer">
-//             <p data-placeholder="Correct answer goes here..." id="correct-answer"></p>
-//               <div className='card-container'>
-//                 <div className='card-body'>
-//                   <CardBack text="Correct!" />
-//
-//                   <CardFront text="Volare" />
-//                 </div>
-//               </div>
-//           </div>
-//           <textarea id="type-answer" placeholder="Type Answer" onKeyPress={this.CheckReturn}></textarea>
-//         </div>
-//         <button id="next-button" type="button" name="button" onClick={this.NextCard}>Next</button>
-//       </div>
-//     )
-//   }
-// }
-
-// Render Card component
-// ReactDOM.render(<Card />, cardContainer);
-
 
 function Footer() {
   return React.createElement(

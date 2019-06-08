@@ -44,8 +44,8 @@ function requestCard() {
     let responseStr = xhr.responseText;
     let cardObject = JSON.parse(responseStr);
 
-    console.log("HEREEEE");
     console.log(cardObject);
+
     let cardLangReview = cardObject.korean;
     let displayLang = document.getElementById("guess-answer");
     displayLang.textContent =  cardLangReview;
@@ -130,21 +130,19 @@ function requestComparison() {
 
     console.log(cardObject);
     english = english.replace(/(\r\n|\n|\r)/gm, "");
-    // console.log("original: ", english);
-    // console.log("returned: ", cardObject.english);
     if(cardObject.english === english){
-      console.log("CORRECT");
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = "CORRECT!";
+
+      correctAnswerElement.classList.remove("wrong-answer");
+      correctAnswerElement.classList.add("correct-answer");
     } else {
-      console.log("Wrongggg");
       let correctAnswer = cardObject.english;
       let correctAnswerElement = document.getElementById("correct-answer");
       correctAnswerElement.textContent = correctAnswer;
-      correctAnswerElement.style.color = "black";
-      correctAnswerElement.style.border = "none";
-      correctAnswerElement.style.padding = "0px";
-      correctAnswerElement.style.backgroundColor= "white";
+
+      correctAnswerElement.classList.remove("correct-answer");
+      correctAnswerElement.classList.add("wrong-answer");
     }
   }
 

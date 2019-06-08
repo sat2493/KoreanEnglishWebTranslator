@@ -5,11 +5,44 @@ class WholePage extends React.Component {
   constructor(props) {
     super(props);
 
-    // set the default value of this.state to the create cards view just for now, and testing purposes
-    this.state = { view: "create" };
-    //this.Header = this.Header.bind(this);
+    this.state = { view: "create" }
     this.changeToReviewMode = this.changeToReviewMode.bind(this);
     this.changeToCreateMode = this.changeToCreateMode.bind(this);
+  }
+
+  createRequest(method, url) {
+    let xhr = new XMLHttpRequest();
+    xhr.open(method, url, true);  // call its open method
+    return xhr;
+  }
+
+  componentDidMount() {
+    let url = "card?getState=true";
+    let xhr = createRequest('GET', url);
+
+      if (!xhr) {
+       alert('Request not supported');
+       return;
+      }
+
+      xhr.onload = function() {
+        let responseStr = xhr.responseText;
+        let object = JSON.parse(responseStr);
+
+        if(object && object.length > 0){
+          this.setState({ view: "review" });
+          requestCard();
+        } else {
+          this.setState({view: "create" });
+        }
+      }.bind(this)
+
+      xhr.onerror = function() {
+        alert('Woops, there was an error making the request.');
+      };
+
+      // Actually send request to server
+      xhr.send();
   }
 
   render() {
@@ -48,8 +81,6 @@ class WholePage extends React.Component {
         );
     }
   }
-
-  componentDidMount() { /*requestUsername();*/ }
 
   changeToReviewMode() {
     console.log("changeToReviewMode.");
@@ -121,7 +152,6 @@ class ReviewCardMain extends React.Component {
     if(event.charCode == 13) {
       console.log("click is triggered?")
       requestComparison();
-      // makeRequest("seen/" + this.props.id, 'POST', null);
 
       let card = document.getElementById('card-container');
 
@@ -130,6 +160,10 @@ class ReviewCardMain extends React.Component {
       } else {
         card.classList.add("hover");
       }
+
+      let typeAnswer = document.getElementById('type-answer');
+
+      typeAnswer.value = "";
     }
   }
 
@@ -167,28 +201,6 @@ class ReviewCardMain extends React.Component {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
    This flipcard component is based on the flipcard component by
@@ -245,58 +257,13 @@ class CardBack extends React.Component {
     return(
       <div className='card-side side-back'>
          <div className='card-side-container'>
-              <h2 id="correct-answer"></h2>
+              <h2 id="correct-answer" className="correct-answer wrong-answer"></h2>
         </div>
         <img src="arrows.png" className="arrowsjpg" />
       </div>
     )
   }
 }
-
-// React component for the card (main component)
-// class Card extends React.Component {
-//   render() {
-//     return(
-//       <div className="cards">
-//         <div className="review-cardside">
-//           <div id="displayAnswer">
-//             <p data-placeholder="Correct answer goes here..." id="correct-answer"></p>
-//               <div className='card-container'>
-//                 <div className='card-body'>
-//                   <CardBack text="Correct!" />
-//
-//                   <CardFront text="Volare" />
-//                 </div>
-//               </div>
-//           </div>
-//           <textarea id="type-answer" placeholder="Type Answer" onKeyPress={this.CheckReturn}></textarea>
-//         </div>
-//         <button id="next-button" type="button" name="button" onClick={this.NextCard}>Next</button>
-//       </div>
-//     )
-//   }
-// }
-
-// Render Card component
-// ReactDOM.render(<Card />, cardContainer);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function Footer() {
   return (

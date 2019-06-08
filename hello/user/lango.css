@@ -110,11 +110,18 @@ header {
   height: 326px;
 }
 
-#correct-answer {
+.correct-answer {
   color: green;
   border: 2px solid green;
   padding: 40px 120px 40px 120px;
   background-color:  #caffa8;
+}
+
+.wrong-answer {
+  color: black;
+  border: none;
+  padding: 0px;
+  backgroundColor: white;
 }
 
 #outputDiv {
@@ -299,7 +306,7 @@ h2 {
     font-size: 17pt;
     height: 30px;
   }
-  #correct-answer {
+  .correct-answer {
     padding: 10px 40px 10px 40px;
   }
   #card-container {
